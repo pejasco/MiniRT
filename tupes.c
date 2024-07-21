@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 20:23:46 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/21 17:13:43 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:54:26 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_tuple	create_tuples(double x, double y, double z, t_tuple_type type)
 	return (tuple);
 }
 
-t_tuple	add_tuples(t_tuple *a, t_tuple *b)
+t_tuple	add_tuples(const t_tuple *a, const t_tuple *b)
 {
 	t_tuple	addition;
 
@@ -43,7 +43,7 @@ t_tuple	add_tuples(t_tuple *a, t_tuple *b)
 	return (addition);
 }
 
-t_tuple	substract_tuples(t_tuple *a, t_tuple *b)
+t_tuple	substract_tuples(const t_tuple *a, const t_tuple *b)
 {
 	t_tuple	substract;
 
@@ -71,7 +71,7 @@ t_tuple	substract_tuples(t_tuple *a, t_tuple *b)
 	return (substract);
 }
 
-t_tuple	negate_tuple(t_tuple *a)
+t_tuple	negate_tuple(const t_tuple *a)
 {
 	t_tuple	negate;
 
@@ -82,7 +82,7 @@ t_tuple	negate_tuple(t_tuple *a)
 	return (negate);
 }
 
-t_tuple scale_tuple(t_tuple *a, double scale)
+t_tuple scale_tuple(const t_tuple *a, double scale)
 {
 	t_tuple result;
 

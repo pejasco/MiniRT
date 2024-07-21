@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:39:16 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/21 17:12:04 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:55:47 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "minirt.h"
 
 
-double find_magnitude(t_tuple *a)
+double find_magnitude(const t_tuple *a)
 {
 	double result;
 	
@@ -27,7 +27,7 @@ double find_magnitude(t_tuple *a)
 	return (result);
 }
 
-t_tuple normalize_vector(t_tuple *a, double magnitude)
+t_tuple normalize_vector(const t_tuple *a, double magnitude)
 {
 	t_tuple normalize;
 
@@ -40,10 +40,10 @@ t_tuple normalize_vector(t_tuple *a, double magnitude)
 	normalize.y = a->y / magnitude;
 	normalize.z = a->z / magnitude;
 	normalize.type = a->type;
-	return (t_tuple);
+	return (normalize);
 }
 
-double dot_product(t_tuple *a, t_tuple *b)
+double dot_product(const t_tuple *a, const t_tuple *b)
 {
 	double result;
 
@@ -57,7 +57,7 @@ double dot_product(t_tuple *a, t_tuple *b)
 }
 
 //it will return a vector
-t_tuple cross_product(t_tuple *a, t_tuple *b)
+t_tuple cross_product(const t_tuple *a, const t_tuple *b)
 {
 	t_tuple result;
 

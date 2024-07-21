@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 14:39:16 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/21 17:07:33 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/21 17:12:04 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ t_tuple normalize_vector(t_tuple *a, double magnitude)
 	normalize.y = a->y / magnitude;
 	normalize.z = a->z / magnitude;
 	normalize.type = a->type;
+	return (t_tuple);
 }
 
 double dot_product(t_tuple *a, t_tuple *b)
@@ -52,6 +53,7 @@ double dot_product(t_tuple *a, t_tuple *b)
 		exit(1);
 	}
 	result = (a->x * b->x) + (a->y * b->y) + (a->z * b->z);
+	return (result);
 }
 
 //it will return a vector

@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:46:52 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 14:15:50 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 18:10:32 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@
 # define KYEL "\x1B[33m"
 
 typedef int	t_argb;
+
+typedef enum e_tuple_type
+{
+	Vector,
+	Point,
+} t_tuple_type;
 
 //______________________________________
 //struc for bresenham:
@@ -116,17 +122,6 @@ typedef struct s_vars //(before: s_mlx_data)
 	//t_map	map;
 }	t_vars;
 
-typedef struct s_canvas
-{
-	int	width;
-	int	height;
-} t_canvas;
-
-typedef enum e_tuple_type
-{
-	Vector,
-	Point,
-} t_tuple_type;
 
 //argc.c
 t_argb	argb(unsigned char alpha, unsigned char r, unsigned char g,

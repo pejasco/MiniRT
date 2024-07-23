@@ -11,30 +11,29 @@ COMMON_FILES := \
 	tran_scale.c \
 	transform.c \
 	tupes.c \
-	tupes2.C \
+	tupes2.c \
 	utilities.c \
 	window.c
 SRC_DIR := src
 OBJ_DIR := build
 INC_DIR := inc
 
-FILES := fdf.c $(COMMON_FILES)
+FILES := minirt.c $(COMMON_FILES)
 SRC := $(addprefix $(SRC_DIR)/, $(FILES))
 OBJ := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 
-FILES_BONUS := fdf.c $(COMMON_FILES)
+FILES_BONUS := minirt.c $(COMMON_FILES)
 SRC_BONUS := $(addprefix $(SRC_DIR)/, $(FILES_BONUS))
 OBJ_BONUS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_BONUS))
 
 MLX_INC := lib/minilibx-linux
 MLX_STT := lib/minilibx-linux/libmlx.a
-FT_INC := lib/libft/inc
+FT_INC := lib/libft/
 FT_STT := lib/libft/lib/libft.a
 
 CFLAGS := -Wall -Wextra -Werror
 
 
-# -O3 highest optimization
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) -I /usr/include -I$(MLX_INC) -I$(FT_INC) -O3 -c $< -o $@ -I$(INC_DIR)
@@ -66,7 +65,7 @@ clean:
 
 fclean: clean
 	rm -f bonus
-	rm -f fdf
+	rm -f minirt
 	rm -f lib/libft/lib/libft.a
 	rm -f lib/libft/lib/*.a
 

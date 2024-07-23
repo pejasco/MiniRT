@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minirt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:29:43 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 14:18:35 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 17:53:44 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minirt.h"
 #include "mlx.h"
 #include <X11/X.h>
+
 
 int main(void)
 {
@@ -25,4 +26,5 @@ int main(void)
 	set_up_hooks(&vars);
 	mlx_loop(vars.mlx_ptr);
 	window_close(&vars);
+	return (0);
 }

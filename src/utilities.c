@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:40:31 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 13:02:21 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:08:46 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,28 @@
 #include <math.h>
 #include "minirt.h"
 
-void	free_all(char **strs)
+void	px_coord_swap(t_px_coord *a, t_px_coord *b)
 {
-	int	i;
+	t_px_coord	tmp;
 
-	i = 0;
-	while (strs && strs[i])
-	{
-		free(strs[i]);
-		i++;
-	}
-	free(strs);
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
+}
+
+int	round_double(double n)
+{
+	if (n > 0)
+		return ((int)(n + 0.5));
+	else
+		return ((int)(n - 0.5));
+}
+
+int	ft_abs(int nbr)
+{
+	if (nbr < 0)
+		return (-nbr);
+	return (nbr);
 }
 
 bool	equal(double a, double b)

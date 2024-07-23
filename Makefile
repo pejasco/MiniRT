@@ -1,29 +1,18 @@
 NAME := minirt
 COMMON_FILES := \
 	argb.c \
-	bsh.c\
-	compose_map.c \
+	bresenham.c\
+	canvas.c \
 	coord_conversion.c \
 	event.c \
-	ft_atoi_base.c\
-	funcs.c \
-	gradient.c \
-	image.c \
-	input_mgt_rgb.c \
-	input_mgt_rgb2.c \
-	input_mgt_val_wcol.c\
-	input_mgt_val.c\
-	input_mgt.c\
-	input_read_file.c\
 	key_transform_ops.c \
-	matrice.c \
-	ortho_render.c \
+	matrix_ops.c \
 	tran_rotation.c \
 	tran_scale.c \
-	transform_iso.c \
-	utili.c \
-	utili2.c \
-	vertex_create.c\
+	transform.c \
+	tupes.c \
+	tupes2.C \
+	utilities.c \
 	window.c
 SRC_DIR := src
 OBJ_DIR := build

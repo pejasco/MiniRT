@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:46:52 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/22 21:16:40 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 14:15:50 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 #include <fcntl.h>
 #include <X11/keysym.h>
 #include <X11/Xlib.h>
+#include <stdbool.h>
 
 #define EPSILON 0.00001
 #define WIDTH 1920
@@ -35,12 +36,28 @@
 
 typedef int	t_argb;
 
-typedef struct s_matrix
+//______________________________________
+//struc for bresenham:
+
+typedef struct s_slope_status
 {
-	int			row_num;
-	int			col_num;
-	double		entries[MAX_ROW][MAX_COL];
-}	t_mx;
+	bool	is_greater_than_1;
+	bool	is_negative;
+}	t_slope_status;
+
+typedef struct s_interpolation
+{
+	double	curr;
+	double	step;
+}	t_interpolation;
+
+typedef struct s_delta
+{
+	int	x;
+	int	y;
+}	t_delta;
+
+//______________________________________
 
 typedef struct s_px_coord
 {
@@ -48,6 +65,13 @@ typedef struct s_px_coord
 	int		y;
 	int		rgb;
 }	t_px_coord;
+
+typedef struct s_matrix
+{
+	int			row_num;
+	int			col_num;
+	double		entries[MAX_ROW][MAX_COL];
+}	t_mx;
 
 typedef struct s_tuple
 {
@@ -104,6 +128,80 @@ typedef enum e_tuple_type
 	Point,
 } t_tuple_type;
 
-int	equal(double a, double b);
+//argc.c
+t_argb	argb(unsigned char alpha, unsigned char r, unsigned char g,
+				unsigned char b);
+unsigned char	get_a(t_argb argb);
+unsigned char	get_r(t_argb argb);
+unsigned char	get_g(t_argb argb);
+unsigned char	get_b(t_argb argb);
+
+//bresenham.c
+void	draw_line(t_img *img_vars, t_px_coord a, t_px_coord b);
+
+//canvas.c
+void	supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color);
+
+//color.c
+t_color create_color(double r, double g, double b);
+t_color add_colors(const t_color *a, const t_color *b);
+t_color subtract_colors(const t_color *original, const t_color *subtract);
+t_color multiply_colors(const t_color *a, const t_color *b);
+
+//cocord_conversion.c
+t_mx	pxcoord_to_mx(t_px_coord px_coord);
+t_px_coord	mx_to_pxcoord(t_mx mx);
+t_px_coord	raster_coord(t_mx screen_coord);
+
+//event.c
+int	iso_kb_key(int key, t_vars *vars);
+int	iso_mouse_button(int button, int x, int y, t_vars *vars);
+
+//key_transl_ops
+t_mx	create_transl_mtx_hotkey(int key);
+t_mx	create_scale_mtx_hotkey(int key_or_button);
+t_mx	create_rotate_mtx_hotkey(int key);
+//void	transform_all_vertexes(t_vars *vars, t_mx transform);
+
+//matrix_ops
+void	multi_process(t_mx *product, t_mx *mxa, t_mx *mxb);
+void	mx_mult_error_msg(void);
+t_mx	mtxa_mult_mtxb(t_mx mtxa, t_mx mtxb);
+
+//tran_rotation
+t_mx	rot_x_mx_4x4(double degree);
+t_mx	rot_y_mx_4x4(double degree);
+t_mx	rot_z_mx_4x4(double degree);
+
+//tran_scale
+t_mx	create_scale4x4(double scale);
+
+//tranform
+t_mx	mx_iso4x4(void);
+void	translate(t_vars *vars, int key);
+void	scale(t_vars *vars, int key);
+void	rotate(t_vars *vars, int key);
+
+//tupes
+t_tuple	create_tuples(double x, double y, double z, t_tuple_type type);
+t_tuple	add_tuples(const t_tuple *a, const t_tuple *b);
+t_tuple	substract_tuples(const t_tuple *a, const t_tuple *b);
+t_tuple	negate_tuple(const t_tuple *a);
+t_tuple scale_tuple(const t_tuple *a, double scale);
+
+//tupes
+double find_magnitude(const t_tuple *a);
+t_tuple normalize_vector(const t_tuple *a, double magnitude);
+double dot_product(const t_tuple *a, const t_tuple *b);
+t_tuple cross_product(const t_tuple *a, const t_tuple *b);
+
+//utilities
+void	free_all(char **strs);
+bool	equal(double a, double b);
+
+//window
+void 	set_up_hooks(t_vars *vars);
+void	window_handle(t_vars *vars);
+void	window_close(t_vars *vars);
 
 #endif

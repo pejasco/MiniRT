@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_transanform_ops.c                              :+:      :+:    :+:   */
+/*   key_transl_ops.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:46:27 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/22 21:47:41 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 12:40:31 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ t_mx	create_rotate_mtx_hotkey(int key)
 	return (rotate4x4);
 }
 
+/*
 void	transform_all_vertexes(t_vars *vars, t_mx transform)
 {
 	int	i;
@@ -79,3 +80,4 @@ void	transform_all_vertexes(t_vars *vars, t_mx transform)
 		i++;
 	}
 }
+*/

@@ -78,6 +78,7 @@ int	f(int keysym, t_var *data)
  * are not written to not clog te code!
  * But u know this stuff is a necessary evil 😂
 */
+/*
 int	main()
 {
 	t_var	data;
@@ -93,3 +94,4 @@ int	main()
 
 	mlx_loop(data.mlx);
 }
+*/

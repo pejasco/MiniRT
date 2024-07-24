@@ -1,7 +1,6 @@
 NAME := minirt
 COMMON_FILES := \
 	argb.c \
-	bresenham.c\
 	canvas.c \
 	coord_conversion.c \
 	event.c \
@@ -9,7 +8,6 @@ COMMON_FILES := \
 	matrix_ops.c \
 	tran_rotation.c \
 	tran_scale.c \
-	transform.c \
 	tupes.c \
 	tupes2.c \
 	utilities.c \
@@ -29,7 +27,7 @@ OBJ_BONUS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC_BONUS))
 MLX_INC := lib/minilibx-linux
 MLX_STT := lib/minilibx-linux/libmlx.a
 FT_INC := lib/libft/
-FT_STT := lib/libft/lib/libft.a
+FT_STT := lib/libft/libft.a
 
 CFLAGS := -Wall -Wextra -Werror
 

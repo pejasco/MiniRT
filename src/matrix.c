@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:10:39 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/24 15:01:55 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:04:23 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,43 @@ t_matrix_4x1	matrix_multiply_tuple(const t_matrix_4x4 *a, const t_tuple *b)
 	}
 	return (result);
 }
+/*
+t_matrix_4x4	matrix_multiply_identity(const t_matrix_4x4 *mtx)
+{
+	t_matrix_4x4	result;
+	t_matrix_4x4	identity;
 
+	identity = (t_matrix_4x4){
+			.entries = {
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1},
+		}};
+	result = multiply_matrices(mtx, &identity);
+	return (result);
+}
+*/
 
+t_matrix_4x4	transpose_a_matrix(const t_matrix_4x4 *mtx)
+{
+	int row;
+	int col;
+	t_matrix_4x4 transpose;
 
-
-
+	row = 0;
+	while (row < 4)
+	{
+		col = 0;
+		while (col < 4)
+		{
+			transpose.entries[row][col] = mtx->entries[col][row];		
+			col++;
+		}
+		row++;
+	}
+	return (transpose);
+}
 
 
 /*

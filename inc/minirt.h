@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:46:52 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 18:10:32 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/24 23:12:46 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,67 @@ typedef struct s_px_coord
 	int		rgb;
 }	t_px_coord;
 
+/*
 typedef struct s_matrix
 {
 	int			row_num;
 	int			col_num;
 	double		entries[MAX_ROW][MAX_COL];
 }	t_mx;
+*/
+
+typedef struct s_matrix_2x2
+{
+	double entries[2][2];
+} s_matrix_2x2;
+
+typedef struct s_matrix_3x3
+{
+	double entries[3][3];
+} s_matrix_3x3;
+
+typedef struct s_matrix_4x4
+{
+	double entries[4][4];
+} t_matrix_4x4;
+
+typedef struct s_matrix_4x1
+{
+	double entries[4][1];
+} t_matrix_4x1;
+
+
+/*
+int main(void)
+{
+	t_matrix_4X4 haha;
+
+	haha = (t_matrix_4X4){
+		.entries = {
+	{1, 2, 3, 4},
+	{5.5, 6.5, 7.5, 8.5},
+	{9, 10, 11, 12},
+	{13.5, 14.5, 15.5, 16.5},
+	}};
+	
+	assert(haha.entries[0][0] == 1);
+	assert(haha.entries[1][2] == 7.5);
+	printf("diuuuuuuuuuuuuuuuuuu\n");
+	assert(haha.entries[3][2] == 999);
+	assert(haha.entries[3][3] == 16.5);
+	return (0);
+}
+*/
 
 typedef struct s_tuple
 {
 	double			x;
 	double			y;
 	double			z;
+	double			w;
 	t_tuple_type 	type;
 	int				rgb;
-	t_mx			real_coord;
+	//t_mx			real_coord;
 } t_tuple;
 
 typedef struct s_color
@@ -132,7 +178,7 @@ unsigned char	get_g(t_argb argb);
 unsigned char	get_b(t_argb argb);
 
 //bresenham.c
-void	draw_line(t_img *img_vars, t_px_coord a, t_px_coord b);
+//void	draw_line(t_img *img_vars, t_px_coord a, t_px_coord b);
 
 //canvas.c
 void	supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color);
@@ -144,14 +190,17 @@ t_color subtract_colors(const t_color *original, const t_color *subtract);
 t_color multiply_colors(const t_color *a, const t_color *b);
 
 //cocord_conversion.c
+/*
 t_mx	pxcoord_to_mx(t_px_coord px_coord);
 t_px_coord	mx_to_pxcoord(t_mx mx);
 t_px_coord	raster_coord(t_mx screen_coord);
+*/
 
 //event.c
 int	iso_kb_key(int key, t_vars *vars);
 int	iso_mouse_button(int button, int x, int y, t_vars *vars);
 
+/*
 //key_transl_ops
 t_mx	create_transl_mtx_hotkey(int key);
 t_mx	create_scale_mtx_hotkey(int key_or_button);
@@ -170,12 +219,15 @@ t_mx	rot_z_mx_4x4(double degree);
 
 //tran_scale
 t_mx	create_scale4x4(double scale);
+*/
 
 //tranform
+/*
 t_mx	mx_iso4x4(void);
 void	translate(t_vars *vars, int key);
 void	scale(t_vars *vars, int key);
 void	rotate(t_vars *vars, int key);
+*/
 
 //tupes
 t_tuple	create_tuples(double x, double y, double z, t_tuple_type type);
@@ -191,7 +243,9 @@ double dot_product(const t_tuple *a, const t_tuple *b);
 t_tuple cross_product(const t_tuple *a, const t_tuple *b);
 
 //utilities
-void	free_all(char **strs);
+void	px_coord_swap(t_px_coord *a, t_px_coord *b);
+int		round_double(double n);
+int		ft_abs(int nbr);
 bool	equal(double a, double b);
 
 //window

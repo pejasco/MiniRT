@@ -6,59 +6,100 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:10:39 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 16:46:54 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/24 15:01:55 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include "minirt.h"
 #include <stdio.h>
+#include <assert.h>
 
-double **alloc_mem_for_mtx(int row, int column)
+bool	are_the_same_matrix(const t_matrix_4x4 *a, const t_matrix_4x4 *b)
 {
-	int		i;
-	int 	y;
+	int	i;
+	int	y;
 
 	i = 0;
-	// row x column matrix
-	double  **mtx = malloc(row * sizeof(double *));
-	while (i < row)
+	while (i < 4)
 	{
-		mtx[i] = malloc(column * sizeof(double));
+		y = 0;
+		while (y < 4)
+		{
+			if (a->entries[i][y] != b->entries[i][y])
+				return (false);
+			y++;
+		}
 		i++;
 	}
-	return (mtx);
+	return (true);
 }
+
+//order matters
+t_matrix_4x4	multiply_matrices(const t_matrix_4x4 *a, const t_matrix_4x4 *b)
+{
+	int row;
+	int	col;
+	t_matrix_4x4 result;
+
+	row = 0;
+	while (row < 4)
+	{
+		col = 0;
+		while (col < 4)
+		{
+			result.entries[row][col] = a->entries[row][0] * b->entries[0][col]
+									+ a->entries[row][1] * b->entries[1][col]
+									+ a->entries[row][2] * b->entries[2][col]
+									+ a->entries[row][3] * b->entries[3][col];
+			col++;
+		}
+		row++;
+	}
+	return (result);
+}
+
+t_matrix_4x1	matrix_multiply_tuple(const t_matrix_4x4 *a, const t_tuple *b)
+{
+	int row;
+	t_matrix_4x1 result;
+
+	row = 0;
+	while (row < 4)
+	{
+			result.entries[row][0] = a->entries[row][0] * b->x;
+									+ a->entries[row][1] * b->y;
+									+ a->entries[row][2] * b->z;
+									+ a->entries[row][3] * b->w;
+		row++;
+	}
+	return (result);
+}
+
+
+
+
+
+
 
 /*
-double values[4][4] = {
-    {1, 2, 3, 4},
-    {5.5, 6.5, 7.5, 8.5},
-    {9, 10, 11, 12},
-    {13.5, 14.5, 15.5, 16.5}
-};
+int main(void)
+{
+	t_matrix_4x4 haha;
+
+	haha = (t_matrix_4x4){
+		.entries = {
+	{1, 2, 3, 4},
+	{5.5, 6.5, 7.5, 8.5},
+	{9, 10, 11, 12},
+	{13.5, 14.5, 15.5, 16.5},
+	}};
+	
+	assert(haha.entries[0][0] == 1);
+	assert(haha.entries[1][2] == 7.5);
+	printf("diuuuuuuuuuuuuuuuuuu\n");
+	assert(haha.entries[3][2] == 999);
+	assert(haha.entries[3][3] == 16.5);
+	return (0);
+}
 */
-
-void assign_matrix_4x4(double **matrix, double **values)
-{
-	y = 0;
-	while (y < column)
-	{
-		
-		y++;
-	}
-	i++;
-}
-
-
-
-
-
-
-void create_matrix_4x4(double *nbr_for_matrix)
-{
-	assert(ma)
-
-
-
-}

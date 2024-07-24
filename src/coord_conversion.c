@@ -6,12 +6,16 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 21:30:15 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/22 21:41:40 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/24 12:19:51 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
+
+
+
+/*
 t_mx	pxcoord_to_mx(t_px_coord px_coord)
 {
 	t_mx	mx;
@@ -41,3 +45,4 @@ t_px_coord	raster_coord(t_mx screen_coord)
 	raster_coord.y = -raster_coord.y + HEIGHT / 2;
 	return (raster_coord);
 }
+*/

@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:40:31 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 15:08:46 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 22:19:23 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,15 @@ int	ft_abs(int nbr)
 	if (nbr < 0)
 		return (-nbr);
 	return (nbr);
+}
+
+void	int_swap(int *a, int *b)
+{
+	int	tmp;
+
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
 bool	equal(double a, double b)

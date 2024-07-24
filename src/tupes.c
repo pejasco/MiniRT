@@ -6,19 +6,21 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 20:23:46 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 12:59:32 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/24 14:36:25 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_tuple	create_tuples(double x, double y, double z, t_tuple_type type)
+t_tuple	create_tuples(double x, double y, double z, double w, t_tuple_type type)
 {
 	t_tuple	tuple;
 
 	tuple.x = x;
 	tuple.y = y;
 	tuple.z = z;
+	tuple.w = w;
+
 	tuple.type = type;
 	return (tuple);
 }

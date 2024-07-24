@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:30:38 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 13:13:31 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/23 22:35:57 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	window_handle(t_vars *vars)
 {
 	vars->mlx_ptr = mlx_init();
 	vars->win_ptr = mlx_new_window
-		(vars->mlx_ptr, WIDTH, HEIGHT, "^-^!!!miniRT!!!^-^");
+		(vars->mlx_ptr, WIDTH, HEIGHT, "!!! miniRT !!!");
 	vars->img_vars.img_ptr = mlx_new_image(vars->mlx_ptr, WIDTH, HEIGHT);
 	vars->img_vars.img_pixels_ptr = mlx_get_data_addr(vars->img_vars.img_ptr,
 			&vars->img_vars.bits_per_pixel,

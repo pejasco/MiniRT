@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 23:06:19 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/25 23:50:39 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/26 19:55:42 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,14 @@ typedef struct s_submatrix_vars
 	int				col;
 } t_submatrix_vars;
 
+typedef	struct s_determinant_vars
+{
+	double	cofactor_row_0_x_col_0;
+	double	cofactor_row_0_x_col_1;
+	double	cofactor_row_0_x_col_2;
+	double 	cofactor_row_0_x_col_3;
+	double	determinant;
+} t_determinant_vars;
 
 void print_matrix(t_matrix_4x4 *mtx)
 {
@@ -65,6 +73,26 @@ double	calculate_determinant_matrix_2x2(t_matrix_4x4 *mtx)
 	result = (mtx->entries[0][0] * mtx->entries[1][1]
 			- mtx->entries[0][1] * mtx->entries[1][0]);
 	return (result);
+}
+
+double calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
+{
+    double determinant = 0.0;
+
+    for (int col = 0; col < 3; col++)
+    {
+        int minor = calculate_minor_matrix_3x3(mtx, 0, col, 3);
+        int cofactor;
+
+        if ((0 + col) % 2 == 0)
+            cofactor = minor;
+        else
+            cofactor = -minor;
+
+        determinant += mtx->entries[0][col] * cofactor;
+    }
+
+    return determinant;
 }
 
 t_matrix_4x4	find_submatrix(t_matrix_4x4 *mtx, int omit_row,
@@ -116,58 +144,108 @@ double calculate_cofactor_matrix_3x3(t_matrix_4x4 *mtx, int omit_row,
 
 	minor = calculate_minor_matrix_3x3(mtx, omit_row,
 			omit_col, smtx_dimen);
-	if ((omit_row + omit_row) % 2 == 0)
+	if ((omit_row + omit_col) % 2 == 0)
 		cofactor = minor;
 	else
 		cofactor = -minor;
 	return (cofactor);
 }
 
-
 double	calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
 {
-	double	result;
+	double	cofactor_row_0_x_col_0;
+	double	cofactor_row_0_x_col_1;
+	double	cofactor_row_0_x_col_2;
+	double	determinant;
 
-	result = (mtx->entries[0][0] * mtx->entries[1][1]
-			- mtx->entries[0][1] * mtx->entries[1][0]);
-	return (result);
+	cofactor_row_0_x_col_0 =
+		calculate_cofactor_matrix_3x3(mtx, 0, 0, 2);
+	cofactor_row_0_x_col_1 =
+		calculate_cofactor_matrix_3x3(mtx, 0, 1, 2);
+	cofactor_row_0_x_col_2 =
+		calculate_cofactor_matrix_3x3(mtx, 0, 2, 2);
+	determinant = 
+		(cofactor_row_0_x_col_0 *
+			mtx->entries[0][0])
+			+ (cofactor_row_0_x_col_1 *
+			mtx->entries[0][1])
+			+ (cofactor_row_0_x_col_2 *
+			mtx->entries[0][2]);
+	return (determinant);
 }
 
 //for simplicity using the 1st row
-double	calculate_determinant_matrix_4x4(t_matrix_4x4 *mtx)
+double	calculate_determinant_matrix(t_matrix_4x4 *mtx, int mtx_dimen)
 {
-	double	cofactor_row_1_x_col_1;
-	double	cofactor_row_1_x_col_2;
-	double	cofactor_row_1_x_col_3;
+	t_determinant_vars	vars;
 
-
-
+	if (mtx_dimen == 2)
+		vars.determinant = calculate_determinant_matrix_2x2(mtx);
+	else if (mtx_dimen == 3)
+		vars.determinant = calculate_determinant_matrix_3x3(mtx);
+	else if (mtx_dimen == 4)
+	{
+		vars.cofactor_row_0_x_col_0 =
+			calculate_cofactor_matrix_3x3(mtx, 0, 0, 2);
+		vars.cofactor_row_0_x_col_1 =
+			calculate_cofactor_matrix_3x3(mtx, 0, 1, 2);
+		vars.cofactor_row_0_x_col_2 =
+			calculate_cofactor_matrix_3x3(mtx, 0, 2, 2);
+		vars.cofactor_row_0_x_col_3 =
+			calculate_cofactor_matrix_3x3(mtx, 0, 3, 2);
+		vars.determinant =
+			((vars.cofactor_row_0_x_col_0 * mtx->entries[0][0])
+				+ (vars.cofactor_row_0_x_col_1 * mtx->entries[0][1])
+				+ (vars.cofactor_row_0_x_col_2 * mtx->entries[0][2])
+				+ (vars.cofactor_row_0_x_col_3 * mtx->entries[0][3]));
+	}
+	return (vars.determinant);
 }
-
-
-
 
 int	main(void)
 {
+	t_matrix_4x4	test2;
 	t_matrix_4x4	test;
+	double			res;
+	double			res2;
+	double			res3;
+	/*
 	double			minor_1;
 	double			cofactor_1;
 	double			minor_2;
 	double			cofactor_2;
+	*/
+
+	test2 = (t_matrix_4x4){
+		.entries = {
+	{1, 2, 6, 0},
+	{-5, 8, -4, 0},
+	{2, 6, 4, 0},
+	{0, 0, 0, 0},
+	}};
 
 	test = (t_matrix_4x4){
 		.entries = {
-	{3, 5, 0, 0},
-	{2, -1, -7, 0},
-	{6, -1, 5, 0},
-	{0, 0, 0, 0},
+	{-2, -8, 3, 5},
+	{-3, 1, 7, 3},
+	{1, 2, -9, 6},
+	{-6, 7, 7, -9},
 	}};
+	/*
 	minor_1 = calculate_minor_matrix_3x3(&test, 0, 0, 2);
 	cofactor_1 = calculate_cofactors_matrix_3x3(&test, 0, 0, 2);
 	minor_2 = calculate_minor_matrix_3x3(&test, 1, 0, 2);
 	cofactor_2 = calculate_cofactor_matrix_3x3(&test, 1, 0, 2);
 	printf("minor: %f; cofactor: %f;\n", minor_1, cofactor_1);
 	printf("minor: %f; cofactor: %f;\n", minor_2, cofactor_2);
+	*/
+	res3 = calculate_determinant_matrix_3x3(&test2);
+	res2 = calculate_determinant_matrix(&test2, 3);
+	res = calculate_determinant_matrix(&test, 4);
+	printf("determinant: %f;\n", res3);
+	printf("determinant: %f;\n", res2);
+	printf("determinant: %f;\n", res);
+	return (0);
 }
 
 

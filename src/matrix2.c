@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/24 23:06:19 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/26 19:55:42 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/28 20:39:32 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,9 @@ double	calculate_determinant_matrix_2x2(t_matrix_4x4 *mtx)
 double calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
 {
     double determinant = 0.0;
+    int col = 0;
 
-    for (int col = 0; col < 3; col++)
+    while (col < 3)
     {
         int minor = calculate_minor_matrix_3x3(mtx, 0, col, 3);
         int cofactor;
@@ -90,6 +91,29 @@ double calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
             cofactor = -minor;
 
         determinant += mtx->entries[0][col] * cofactor;
+        col++;
+    }
+
+    return determinant;
+}
+
+double calculate_determinant_matrix_4x4(t_matrix_4x4 *mtx)
+{
+    double determinant = 0.0;
+    int col = 0;
+
+    while (col < 4)
+    {
+        int minor = calculate_minor_matrix_4x4(mtx, 0, col, 4);
+        int cofactor;
+
+        if ((0 + col) % 2 == 0)
+            cofactor = minor;
+        else
+            cofactor = -minor;
+
+        determinant += mtx->entries[0][col] * cofactor;
+        col++;
     }
 
     return determinant;
@@ -151,6 +175,7 @@ double calculate_cofactor_matrix_3x3(t_matrix_4x4 *mtx, int omit_row,
 	return (cofactor);
 }
 
+/*
 double	calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
 {
 	double	cofactor_row_0_x_col_0;
@@ -173,6 +198,8 @@ double	calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
 			mtx->entries[0][2]);
 	return (determinant);
 }
+*/
+
 
 //for simplicity using the 1st row
 double	calculate_determinant_matrix(t_matrix_4x4 *mtx, int mtx_dimen)

@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:46:52 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/24 23:12:46 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/30 23:28:43 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,28 @@
 #define MAX_ROW 4
 # define WHITE 0xffffff
 # define BLACK 0x000000
-#define PI 3.1415926
+# define PI 3.1415926
 # define KNRM "\x1B[0m"
 # define KRED "\x1B[31m"
 # define KYEL "\x1B[33m"
 
 typedef int	t_argb;
 
+typedef struct s_atof_vars
+{
+    double  result; //0.0
+    int     exponent; //0
+    double  sign; //1.0
+    int     exponent_sign; //1
+    double  fraction; //0.1
+} t_atof_vars;
+
 typedef enum e_tuple_type
 {
 	Vector,
 	Point,
 } t_tuple_type;
+
 
 //______________________________________
 //struc for bresenham:
@@ -81,26 +91,44 @@ typedef struct s_matrix
 }	t_mx;
 */
 
-typedef struct s_matrix_2x2
-{
-	double entries[2][2];
-} s_matrix_2x2;
-
-typedef struct s_matrix_3x3
-{
-	double entries[3][3];
-} s_matrix_3x3;
-
 typedef struct s_matrix_4x4
 {
 	double entries[4][4];
 } t_matrix_4x4;
 
-typedef struct s_matrix_4x1
+typedef struct s_submatrix_vars
 {
-	double entries[4][1];
-} t_matrix_4x1;
+	t_matrix_4x4	smtx;
+	int				sub_row;
+	int				sub_col;
+	int				row;
+	int				col;
+} t_submatrix_vars;
 
+typedef	struct s_determinant_vars
+{
+	double	cofactor_row_0_x_col_0;
+	double	cofactor_row_0_x_col_1;
+	double	cofactor_row_0_x_col_2;
+	double 	cofactor_row_0_x_col_3;
+	double	determinant;
+} t_determinant_vars;
+
+typedef struct s_shear_vars
+{
+	double	xy;
+	double	xz;
+	double	yx;
+	double	yz;
+	double	zx;
+	double	zy;
+} t_shear_vars;
+
+typedef struct s_ray
+{
+	t_tuple point;
+	t_tuple vector;
+} t_ray;
 
 /*
 int main(void)
@@ -230,23 +258,61 @@ void	rotate(t_vars *vars, int key);
 */
 
 //tupes
-t_tuple	create_tuples(double x, double y, double z, t_tuple_type type);
+t_tuple	create_tuples(double x, double y, double z,
+				double w, t_tuple_type type);
 t_tuple	add_tuples(const t_tuple *a, const t_tuple *b);
 t_tuple	substract_tuples(const t_tuple *a, const t_tuple *b);
 t_tuple	negate_tuple(const t_tuple *a);
 t_tuple scale_tuple(const t_tuple *a, double scale);
 
 //tupes
-double find_magnitude(const t_tuple *a);
-t_tuple normalize_vector(const t_tuple *a, double magnitude);
-double dot_product(const t_tuple *a, const t_tuple *b);
-t_tuple cross_product(const t_tuple *a, const t_tuple *b);
+double	find_magnitude(const t_tuple *a);
+t_tuple	normalize_vector(const t_tuple *a, double magnitude);
+double	dot_product(const t_tuple *a, const t_tuple *b);
+t_tuple	cross_product(const t_tuple *a, const t_tuple *b);
+
+//matrix
+bool			are_the_same_matrix(const t_matrix_4x4 *a,
+					const t_matrix_4x4 *b);
+t_matrix_4x4	multiply_matrices(const t_matrix_4x4 *a,
+					const t_matrix_4x4 *b);
+t_matrix_4x4	transpose_a_matrix(const t_matrix_4x4 *mtx);
+void			print_matrix(t_matrix_4x4 *mtx);
+
+//matrix2
+t_matrix_4x4	create_matrix_filled_with_zero(void);
+t_matrix_4x4	find_submatrix(t_matrix_4x4 *mtx, int omit_row,
+					int omit_col, int smtx_dimen);
+double 			calculate_cofactor(t_matrix_4x4 *mtx, int omit_row,
+					int omit_col, int size);
+double			calculate_determinant(t_matrix_4x4 *mtx, int size);
+double 			calculate_minor(t_matrix_4x4 *mtx, int omit_row,
+					int omit_col, int size);
+
+//matrix3
+bool			is_invertible(t_matrix_4x4 *mtx, int size);
+t_matrix_4x4	process_a_cofactor_matrix(t_matrix_4x4 *mtx, int size);
+t_matrix_4x4	inverse_a_matrix(t_matrix_4x4 *mtx, int size);
+
+//matrix4
+t_matrix_4x4	translate_matrix(double x, double y, double z);
+t_matrix_4x4	scale_matrix(double x, double y, double z);
+t_matrix_4x4	shear_matrix(t_shear_vars *vars);
+
+//matrix5
+double			get_radian(double degree);
+t_matrix_4x4	rotate_x_matrix(double radian);
+t_matrix_4x4	rotate_y_matrix(double radian);
+t_matrix_4x4	rotate_z_matrix(double radian);
 
 //utilities
 void	px_coord_swap(t_px_coord *a, t_px_coord *b);
 int		round_double(double n);
 int		ft_abs(int nbr);
 bool	equal(double a, double b);
+
+//utilities2
+void	print_matrix(t_matrix_4x4 *mtx);
 
 //window
 void 	set_up_hooks(t_vars *vars);

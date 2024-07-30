@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix4.c                                          :+:      :+:    :+:   */
+/*   matrix5.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/30 17:51:46 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/30 18:20:20 by chuleung         ###   ########.fr       */
+/*   Created: 2024/07/30 17:54:54 by chuleung          #+#    #+#             */
+/*   Updated: 2024/07/30 18:23:58 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,49 @@
 #include <math.h>
 #include <stdbool.h>
 
-t_matrix_4x4 translate_matrix(double x, double y, double z)
+double get_radian(double degree)
 {
-	t_matrix_4x4 translate;
+	return (degree /180 *PI);
+}
+2
+t_matrix_4x4 rotate_x_matrix(double radian)
+{
+	t_matrix_4x4 rotate;
 
-	translate = (t_matrix_4x4){
+	rotate = (t_matrix_4x4){
 		.entries = {
-	{1, 0, 0, x},
-	{0, 1, 0, y},
-	{0, 0, 1, z},
+	{1, 0, 0, 0},
+	{0, cos(radian), -sin(radian), 0},
+	{0, sin(radian), cos(radian), 0},
 	{0, 0, 0, 1},
 	}};
-	return (translate);
+	return (rotate);
 }
 
-t_matrix_4x4 scale_matrix(double x, double y, double z)
+t_matrix_4x4 rotate_y_matrix(double radian)
 {
-	t_matrix_4x4 translate;
+	t_matrix_4x4 rotate;
 
-	translate = (t_matrix_4x4){
+	rotate = (t_matrix_4x4){
 		.entries = {
-	{x, 0, 0, 0},
-	{0, y, 0, 0},
-	{0, 0, z, 0},
+	{cos(radian), 0, sin(radian), 0},
+	{0, 1, 0, 0},
+	{-sin(radian), 0, cos(radian), 0},
 	{0, 0, 0, 1},
 	}};
-	return (translate);
+	return (rotate);
 }
 
-t_matrix_4x4 shear_matrix(t_shear_vars *vars)
+t_matrix_4x4 rotate_z_matrix(double radian)
 {
-	t_matrix_4x4 shear;
+	t_matrix_4x4 rotate;
 
-	shear = (t_matrix_4x4){
+	rotate = (t_matrix_4x4){
 		.entries = {
-	{1, vars->xy, vars->xz, 0},
-	{vars->yx, 1, vars->yz, 0},
-	{vars->zx, vars->zy, 1, 0},
+	{cos(radian), -sin(radian), 0, 0},
+	{sin(radian), cos(radian), 0, 0},
+	{0, 0, 1, 0},
 	{0, 0, 0, 1},
 	}};
-	return (shear);
+	return (rotate);
 }
-

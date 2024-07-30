@@ -5,52 +5,18 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/24 23:06:19 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/28 20:39:32 by chuleung         ###   ########.fr       */
+/*   Created: 2024/07/28 16:42:47 by chuleung          #+#    #+#             */
+/*   Updated: 2024/07/30 18:20:33 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "minirt.h"
+//rotate->scale->translate
+
+#include "minirt.h"
 #include <stdlib.h>
 #include <stdio.h>
-
-typedef struct s_matrix_4x4
-{
-	double entries[4][4];
-} t_matrix_4x4;
-
-typedef struct s_submatrix_vars
-{
-	t_matrix_4x4	smtx;
-	int				sub_row;
-	int				sub_col;
-	int				row;
-	int				col;
-} t_submatrix_vars;
-
-typedef	struct s_determinant_vars
-{
-	double	cofactor_row_0_x_col_0;
-	double	cofactor_row_0_x_col_1;
-	double	cofactor_row_0_x_col_2;
-	double 	cofactor_row_0_x_col_3;
-	double	determinant;
-} t_determinant_vars;
-
-void print_matrix(t_matrix_4x4 *mtx)
-{
-    printf("#########################################################\n");
-    printf("{%f, %f, %f, %f}\n", mtx->entries[0][0],
-        mtx->entries[0][1], mtx->entries[0][2], mtx->entries[0][3]);
-    printf("{%f, %f, %f, %f}\n", mtx->entries[1][0],
-        mtx->entries[1][1], mtx->entries[1][2], mtx->entries[1][3]);
-    printf("{%f, %f, %f, %f}\n", mtx->entries[2][0],
-        mtx->entries[2][1], mtx->entries[2][2], mtx->entries[2][3]);
-    printf("{%f, %f, %f, %f}\n", mtx->entries[3][0],
-        mtx->entries[3][1], mtx->entries[3][2], mtx->entries[3][3]);
-    printf("#########################################################\n");
-}
-
+#include <math.h>
+#include <stdbool.h>
 
 t_matrix_4x4	create_matrix_filled_with_zero(void)
 {
@@ -64,59 +30,6 @@ t_matrix_4x4	create_matrix_filled_with_zero(void)
 	{0, 0, 0, 0},
 	}};
 	return (mtx_with_zero);
-}
-
-double	calculate_determinant_matrix_2x2(t_matrix_4x4 *mtx)
-{
-	double	result;
-
-	result = (mtx->entries[0][0] * mtx->entries[1][1]
-			- mtx->entries[0][1] * mtx->entries[1][0]);
-	return (result);
-}
-
-double calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
-{
-    double determinant = 0.0;
-    int col = 0;
-
-    while (col < 3)
-    {
-        int minor = calculate_minor_matrix_3x3(mtx, 0, col, 3);
-        int cofactor;
-
-        if ((0 + col) % 2 == 0)
-            cofactor = minor;
-        else
-            cofactor = -minor;
-
-        determinant += mtx->entries[0][col] * cofactor;
-        col++;
-    }
-
-    return determinant;
-}
-
-double calculate_determinant_matrix_4x4(t_matrix_4x4 *mtx)
-{
-    double determinant = 0.0;
-    int col = 0;
-
-    while (col < 4)
-    {
-        int minor = calculate_minor_matrix_4x4(mtx, 0, col, 4);
-        int cofactor;
-
-        if ((0 + col) % 2 == 0)
-            cofactor = minor;
-        else
-            cofactor = -minor;
-
-        determinant += mtx->entries[0][col] * cofactor;
-        col++;
-    }
-
-    return determinant;
 }
 
 t_matrix_4x4	find_submatrix(t_matrix_4x4 *mtx, int omit_row,
@@ -149,99 +62,136 @@ t_matrix_4x4	find_submatrix(t_matrix_4x4 *mtx, int omit_row,
 	return (smtx_vars.smtx);
 }
 
-double	calculate_minor_matrix_3x3(t_matrix_4x4 *mtx, int omit_row,
-					int omit_col, int smtx_dimen)
+double calculate_cofactor(t_matrix_4x4 *mtx, int omit_row, int omit_col, int size)
 {
-	t_matrix_4x4	submatrix;
-	double			minor;
+    double minor;
+    double cofactor;
 
-	submatrix = find_submatrix(mtx, omit_row, omit_col, smtx_dimen);
-	minor = calculate_determinant_matrix_2x2(&submatrix);
-	return (minor);
+    minor = calculate_minor(mtx, omit_row, omit_col, size);
+    cofactor = pow(-1, omit_row + omit_col) * minor;
+    return (cofactor);
 }
 
-double calculate_cofactor_matrix_3x3(t_matrix_4x4 *mtx, int omit_row,
-					int omit_col, int smtx_dimen)
+double calculate_determinant(t_matrix_4x4 *mtx, int size)
 {
-	double			minor;
-	double			cofactor;
+    double determinant ;
+    double cofactor;
 
-	minor = calculate_minor_matrix_3x3(mtx, omit_row,
-			omit_col, smtx_dimen);
-	if ((omit_row + omit_col) % 2 == 0)
-		cofactor = minor;
-	else
-		cofactor = -minor;
-	return (cofactor);
+    determinant = 0.0;
+    cofactor = 0.0;
+
+    if (size == 2)
+    {
+        determinant = mtx->entries[0][0] * mtx->entries[1][1] - mtx->entries[0][1] * mtx->entries[1][0];
+    }
+    else
+    {
+        for (int i = 0; i < size; i++)
+        {
+            double cofactor = calculate_cofactor(mtx, 0, i, size);
+            determinant += mtx->entries[0][i] * cofactor;
+        }
+    }
+    return (determinant);
 }
+
+double calculate_minor(t_matrix_4x4 *mtx, int omit_row, int omit_col, int size)
+{
+    t_matrix_4x4 minor_mtx = find_submatrix(mtx, omit_row, omit_col, size - 1);
+    return (calculate_determinant(&minor_mtx, size - 1));
+}
+
+
+//rotate -> scale -> translate
 
 /*
-double	calculate_determinant_matrix_3x3(t_matrix_4x4 *mtx)
+int	main(void)
 {
-	double	cofactor_row_0_x_col_0;
-	double	cofactor_row_0_x_col_1;
-	double	cofactor_row_0_x_col_2;
-	double	determinant;
+	t_matrix_4x4	a;
+	t_matrix_4x4	b;
+	t_matrix_4x4	c;
+	t_matrix_4x4	inverse_b;
+	t_matrix_4x4	res;
 
-	cofactor_row_0_x_col_0 =
-		calculate_cofactor_matrix_3x3(mtx, 0, 0, 2);
-	cofactor_row_0_x_col_1 =
-		calculate_cofactor_matrix_3x3(mtx, 0, 1, 2);
-	cofactor_row_0_x_col_2 =
-		calculate_cofactor_matrix_3x3(mtx, 0, 2, 2);
-	determinant = 
-		(cofactor_row_0_x_col_0 *
-			mtx->entries[0][0])
-			+ (cofactor_row_0_x_col_1 *
-			mtx->entries[0][1])
-			+ (cofactor_row_0_x_col_2 *
-			mtx->entries[0][2]);
-	return (determinant);
+	a = (t_matrix_4x4){
+		.entries = {
+	{3, -9, 7, 3},
+	{3, -8, 2, -9},
+	{-4, 4, 4, 1},
+	{-6, 5, -1, 1},
+	}};
+
+	b = (t_matrix_4x4){
+		.entries = {
+	{8, 2, 2, 2},
+	{3, -1, 8, 0},
+	{7, 0, 5, 4},
+	{6, -2, 0, 5},
+	}};
+
+	c = multiply_matrices(&a, &b); 
+	inverse_b = inverse_a_matrix(&b, 4);
+	res = multiply_matrices(&c, &inverse_b);
+	print_matrix(&res);
 }
 */
 
-
-//for simplicity using the 1st row
-double	calculate_determinant_matrix(t_matrix_4x4 *mtx, int mtx_dimen)
+/*
+int	main(void)
 {
-	t_determinant_vars	vars;
+	t_matrix_4x4	test;
+	t_matrix_4x4	test1;
+	t_matrix_4x4	test2;
+	t_matrix_4x4	result;
+	t_matrix_4x4	result1;
+	t_matrix_4x4	result2;
 
-	if (mtx_dimen == 2)
-		vars.determinant = calculate_determinant_matrix_2x2(mtx);
-	else if (mtx_dimen == 3)
-		vars.determinant = calculate_determinant_matrix_3x3(mtx);
-	else if (mtx_dimen == 4)
-	{
-		vars.cofactor_row_0_x_col_0 =
-			calculate_cofactor_matrix_3x3(mtx, 0, 0, 2);
-		vars.cofactor_row_0_x_col_1 =
-			calculate_cofactor_matrix_3x3(mtx, 0, 1, 2);
-		vars.cofactor_row_0_x_col_2 =
-			calculate_cofactor_matrix_3x3(mtx, 0, 2, 2);
-		vars.cofactor_row_0_x_col_3 =
-			calculate_cofactor_matrix_3x3(mtx, 0, 3, 2);
-		vars.determinant =
-			((vars.cofactor_row_0_x_col_0 * mtx->entries[0][0])
-				+ (vars.cofactor_row_0_x_col_1 * mtx->entries[0][1])
-				+ (vars.cofactor_row_0_x_col_2 * mtx->entries[0][2])
-				+ (vars.cofactor_row_0_x_col_3 * mtx->entries[0][3]));
-	}
-	return (vars.determinant);
+	test = (t_matrix_4x4){
+		.entries = {
+	{-5, 2, 6, -8},
+	{1, -5, 1, 8},
+	{7, 7, -6, -7},
+	{1, -3, 7, 4},
+	}};
+
+	test1 = (t_matrix_4x4){
+		.entries = {
+	{8, -5, 9, 2},
+	{7, 5, 6, 1},
+	{-6, 0, 9, 6},
+	{-3, 0, -9, -4},
+	}};
+
+	test2 = (t_matrix_4x4){
+		.entries = {
+	{9, 3, 0, 9},
+	{-5, -2, -6, -3},
+	{-4, 9, 6, 4},
+	{-7, 6, 6, 2},
+	}};
+
+	result = inverse_a_matrix(&test, 4);
+	result1 = inverse_a_matrix(&test1, 4);
+	result2 = inverse_a_matrix(&test2, 4);
+	print_matrix(&result);
+	print_matrix(&result1);
+	print_matrix(&result2);
 }
+*/
 
+/*
 int	main(void)
 {
 	t_matrix_4x4	test2;
 	t_matrix_4x4	test;
 	double			res;
 	double			res2;
-	double			res3;
-	/*
+	//double			res3;
 	double			minor_1;
 	double			cofactor_1;
 	double			minor_2;
 	double			cofactor_2;
-	*/
+
 
 	test2 = (t_matrix_4x4){
 		.entries = {
@@ -258,98 +208,30 @@ int	main(void)
 	{1, 2, -9, 6},
 	{-6, 7, 7, -9},
 	}};
-	/*
+
 	minor_1 = calculate_minor_matrix_3x3(&test, 0, 0, 2);
 	cofactor_1 = calculate_cofactors_matrix_3x3(&test, 0, 0, 2);
 	minor_2 = calculate_minor_matrix_3x3(&test, 1, 0, 2);
 	cofactor_2 = calculate_cofactor_matrix_3x3(&test, 1, 0, 2);
 	printf("minor: %f; cofactor: %f;\n", minor_1, cofactor_1);
 	printf("minor: %f; cofactor: %f;\n", minor_2, cofactor_2);
-	*/
-	res3 = calculate_determinant_matrix_3x3(&test2);
-	res2 = calculate_determinant_matrix(&test2, 3);
-	res = calculate_determinant_matrix(&test, 4);
-	printf("determinant: %f;\n", res3);
+
+	//res3 = calculate_determinant_matrix_3x3(&test2);
+	res2 = calculate_determinant(&test2, 3);
+	res = calculate_determinant(&test, 4);
+	//printf("determinant: %f;\n", res3);
 	printf("determinant: %f;\n", res2);
 	printf("determinant: %f;\n", res);
 	return (0);
 }
-
-
-
-/*
-int	main(void)
-{
-	t_matrix_4x4	test_1;
-	double			result_1;
-	t_matrix_4x4	test_2;
-	t_matrix_4x4	result_2;
-	double	res;
-
-
-	test = (t_matrix_4x4){
-		.entries = {
-	{-6, 1, 1, 6},
-	{-8, 5, 8, 6},
-	{-1, 0, 8, 2},
-	{-7, 1, -1, 1},
-	}};
-	result = find_submatrix(&test, 2, 1, 3);
-	print_matrix(&result);
-
-	test_1 = (t_matrix_4x4){
-		.entries = {
-	{3, 5, 0, 0},
-	{2, -1, -7, 0},
-	{6, -1, 5, 0},
-	{0, 0, 0, 0},
-	}};
-	result_1 = calculate_minor_matrix_3x3(&test_1);
-	printf("result: %f\n", result_1);
-
-	test_2 = (t_matrix_4x4){
-		.entries = {
-	{3, 5, 0, 0},
-	{2, -1, -7, 0},
-	{6, -1, 5, 0},
-	{0, 0, 0, 0},
-	}};
-	result_2 = find_submatrix(&test_2, 1, 0, 2);
-	print_matrix(&result_2);
-	res = calculate_determinant_matrix_2x2(&result_2);
-	printf("result: %f\n", res);
-	return (0);
-}
 */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
-t_matrix_4x4	matrix_multiply_identity(const t_matrix_4x4 *mtx)
-{
-	t_matrix_4x4	result;
-	t_matrix_4x4	identity;
+Yes, there is a difference between the inverse of the transpose of a matrix and the transpose of the inverse of a matrix. However, for any square matrix A, the following property holds:
 
-	identity = (t_matrix_4x4){
-			.entries = {
-		{1, 0, 0, 0},
-		{0, 1, 0, 0},
-		{0, 0, 1, 0},
-		{0, 0, 0, 1},
-		}};
-	result = multiply_matrices(mtx, &identity);
-	return (result);
-}
+(A^T)^-1 = (A^-1)^T
+
+This means that the inverse of the transpose of a matrix A is equal to the transpose of the inverse of A. This property is known as the "Inverse Transpose Property".
+
+It's important to note that this property only holds for invertible (or nonsingular) matrices. If a matrix is not invertible (or singular), its inverse does not exist.
 */

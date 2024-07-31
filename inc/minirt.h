@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:46:52 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/30 23:28:43 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/07/31 22:05:20 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,6 @@
 # define KYEL "\x1B[33m"
 
 typedef int	t_argb;
-
-typedef struct s_atof_vars
-{
-    double  result; //0.0
-    int     exponent; //0
-    double  sign; //1.0
-    int     exponent_sign; //1
-    double  fraction; //0.1
-} t_atof_vars;
 
 typedef enum e_tuple_type
 {
@@ -123,12 +114,50 @@ typedef struct s_shear_vars
 	double	zx;
 	double	zy;
 } t_shear_vars;
-
+//______________________________________
 typedef struct s_ray
 {
-	t_tuple point;
+	t_tuple origin_point;
 	t_tuple vector;
+	double	t_1;
+	double	t_2;
 } t_ray;
+//______________________________________
+
+typedef struct s_atof_vars
+{
+    double  result; //0.0
+    int     exponent; //0
+    double  sign; //1.0
+    int     exponent_sign; //1
+    double  fraction; //0.1
+} t_atof_vars;
+
+//______________________________________
+
+typedef struct s_sphere
+{
+	int			id;
+	t_tuple		origin_point;
+} t_sphere;
+
+typedef struct s_intersec
+{
+	t_tuple		intersec_1;				
+	t_tuple		intersec_2;
+} t_intersec;
+
+typedef struct s_sphere_intersec_vars
+{
+	t_tuple	sphere_to_ray;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+} t_sphere_intersec_vars;
+
+
+
 
 /*
 int main(void)

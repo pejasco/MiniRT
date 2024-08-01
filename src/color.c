@@ -6,11 +6,11 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 17:35:02 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/21 18:12:25 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 
 t_color create_color(double r, double g, double b)
 {

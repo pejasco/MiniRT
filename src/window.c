@@ -6,11 +6,11 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:30:38 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 22:35:57 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 
 void set_up_hooks(t_vars *vars)
 {

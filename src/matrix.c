@@ -6,14 +6,14 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/23 15:10:39 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/30 17:45:37 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //rotate->scale->translate
 
 #include <stdbool.h>
-#include "minirt.h"
+#include "../inc/minirt.h"
 #include <stdio.h>
 #include <assert.h>
 

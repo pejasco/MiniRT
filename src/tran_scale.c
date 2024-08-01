@@ -6,11 +6,11 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/22 22:00:15 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/22 23:43:31 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 
 t_mx	create_scale4x4(double scale)
 {

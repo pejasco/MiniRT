@@ -6,22 +6,24 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 20:23:46 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/25 20:22:46 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 17:05:56 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 
-t_tuple	create_tuples(double x, double y, double z, double w, t_tuple_type type)
+t_tuple	create_tuples(double x, double y, double z, t_tuple_type type)
 {
 	t_tuple	tuple;
 
 	tuple.x = x;
 	tuple.y = y;
 	tuple.z = z;
-	tuple.w = w;
-
 	tuple.type = type;
+	if (tuple.type == Vector)
+		tuple.w = 0;
+	else if (tuple.type == Point)
+		tuple.w = 1;
 	return (tuple);
 }
 
@@ -93,4 +95,17 @@ t_tuple scale_tuple(const t_tuple *a, double scale)
 	result.z = a->z * scale;
 	result.type = a->type;
 	return (result);
+}
+
+t_tuple	point_minus_point(const t_tuple *a, const t_tuple *b)
+{
+	t_tuple	substract;
+
+	substract.x = a->x - b->x;
+	substract.y = a->y - b->y;
+	substract.z = a->z - b->z;
+	substract.type = Vector;
+	if (a->type == Point && b->type == Vector)
+		substract.type = Point;
+	return (substract);
 }

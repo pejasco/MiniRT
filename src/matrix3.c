@@ -6,13 +6,13 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/28 20:49:28 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/30 18:20:38 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 //rotate->scale->translate
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

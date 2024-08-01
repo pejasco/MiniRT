@@ -1,4 +1,4 @@
-#include "minirt.h"
+#include "../inc/minirt.h"
 
 #include "minilibx-linux/mlx.h"
 #include <X11/keysym.h>

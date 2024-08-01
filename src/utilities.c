@@ -6,13 +6,13 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:40:31 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 22:19:23 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include <math.h>
-#include "minirt.h"
+#include "../inc/minirt.h"
 
 void	px_coord_swap(t_px_coord *a, t_px_coord *b)
 {

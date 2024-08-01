@@ -6,11 +6,11 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/25 20:19:02 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/25 20:29:46 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "../inc/minirt.h"
 #include <stdio.h>>
 
 void print_matrix(t_matrix_4x4 *mtx)

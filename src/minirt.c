@@ -6,12 +6,12 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:29:43 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/23 17:53:44 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "minirt.h"
+#include "../inc/minirt.h"
 #include "mlx.h"
 #include <X11/X.h>
 

@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/27 14:43:09 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/28 16:09:22 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <math.h>
 #include <float.h>
 #include <limits.h>
-#include "minirt.h"
+#include "../inc/minirt.h"
 
 /*
 The string "-1.23e42" represents a floating-point number in 

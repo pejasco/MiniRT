@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 13:55:42 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/02 13:58:15 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/02 14:59:58 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,11 +178,48 @@ t_intersection **sort_intersections(t_intersection **current_arry)
 			break;
 		++i;
 	}
+	i = 0;
+	while (i < count - 1)
+	{
+		arry[i]->order = i;
+		i++;
+	}
 	free(current_arry);
 	return (arry);
 }
 
+t_intersection *find_hit(t_intersection **arry, int current_item_order)
+{
+    int	i;
+    int count;
 
+    i = 0;
+    count = arry[0]->count;
+    if (current_item_order >= count)
+        return (NULL);
+    
+    i = current_item_order + 1;
+    while (i < count)
+    {
+        if (arry[i]->t >= 0)
+            return arry[i];
+        i++;
+    }
+    return (NULL);
+}
+
+void print_intersection(t_intersection *intersection)
+{
+		printf("###################################\n");
+		printf("\033[0;33m");
+		printf("Object: %s  | ", intersection->object->type);
+		printf("ID: %d\n", intersection->object->id);
+		printf("-----------------------------------\n");
+		printf("\033[0m");
+		printf("Distance: %f\n",intersection->t);
+		printf("###################################\n");
+		printf("\n");
+}
 
 void print_arry(t_intersection **arry)
 {
@@ -226,6 +263,7 @@ int main(void)
 	t_distance	res_2;
 	t_intersection intersection_2a;
 	t_intersection intersection_2b;
+	t_intersection *hit = NULL;
 	t_intersection **arry = NULL;
 
 	s_org_1 = create_tuples(0, 0, 0, Point);
@@ -244,9 +282,21 @@ int main(void)
 	printf("t[0]: %f\n", res_1.t[0]);	
 	printf("t[1]: %f\n", res_1.t[1]);
 
+	//positive (t0: 5 & t1: 5)
+	//s_org_2 = create_tuples(0, 0, 0, Point);
+	//r_org_2 = create_tuples(0, 1, -5, Point);
+	//r_dir_2 = create_tuples(0, 0, 1, Vector);
+
+	//positive (t0: 4 & t1: 6)
 	s_org_2 = create_tuples(0, 0, 0, Point);
-	r_org_2 = create_tuples(0, 1, -5, Point);
+	r_org_2 = create_tuples(0, 0, -5, Point);
 	r_dir_2 = create_tuples(0, 0, 1, Vector);
+
+	//positive (t0: -1 & t1: 1)
+	//s_org_2 = create_tuples(0, 0, 0, Point);
+	//r_org_2 = create_tuples(0, 0, 0, Point);
+	//r_dir_2 = create_tuples(0, 0, 1, Vector);
+
 	s_2 = create_sphere(1, s_org_2);
 	r_2 = create_ray(r_org_2, r_dir_2);
 	res_2 = intersect(&s_2, &r_2);
@@ -265,6 +315,12 @@ int main(void)
 	print_arry(arry);
 	arry = sort_intersections(arry);
 	print_arry(arry);
+	hit = find_hit(arry, 0);
+	print_intersection(hit);
+	hit = find_hit(arry, 1);
+	print_intersection(hit);
+	hit = find_hit(arry, 2);
+	print_intersection(hit);
 }
 
 /*

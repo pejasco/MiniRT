@@ -9,4 +9,4 @@ cc -I$HEADER_PATH -L$LIB_PATH -Werror -Wextra -Wall \
 ray.c \
 sphere.c \
 tupes.c \
-tupes2.c -lm -o diu
+tupes2.c -g -lm -o diu

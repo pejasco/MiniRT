@@ -6,17 +6,19 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 13:55:42 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/01 23:49:07 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/02 13:58:15 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt.h"
+#include "../lib/libft/libft.h"
 #include <math.h>
 #include <stdio.h>
 
 t_sphere create_sphere(int id, t_tuple origin_point)
 {
 	return ((t_sphere){
+		.type = "Sphere",
 		.id = id,
 		.origin_point = origin_point,
 	});
@@ -80,7 +82,8 @@ t_distance intersect(t_sphere *s, t_ray *r)
 	return (distance);
 }
 
-
+//only the visible intersection
+//we call it hit
 t_intersection create_intersection(t_sphere *object, double t)
 {
 	t_intersection product;
@@ -94,8 +97,10 @@ t_intersection **create_intersections(t_intersection **current_arry,
 	t_intersection *i1, t_intersection *i2)
 {
 	int		i;
+	int		j;
 	
 	i = 0;
+	j = 0;
 	t_intersection **arry;
 
     if (current_arry == NULL)
@@ -109,36 +114,75 @@ t_intersection **create_intersections(t_intersection **current_arry,
         arry[0] = i1;
         arry[1] = i2;
         arry[2] = NULL;
+		arry[0]->count = 2;
     }
-	else
-	{
-		while (current_arry[i])
-			++i;
-		arry = malloc(sizeof(t_intersection *) * (i + 2 + 1));
-		if (arry == NULL)
-		{
+    else
+    {
+        while (current_arry[i])
+            ++i;
+        arry = malloc(sizeof(t_intersection *) * (i + 2 + 1));
+        if (arry == NULL)
+        {
             perror("Failed to allocate memory for intersections");
             exit(1);
         }
 		i = 0;
-		while (current_arry[i])
+        while (current_arry[j])
 		{
-			arry[i] = current_arry[i];
-			++i;
+			arry[j] = current_arry[j];
+			++j;
 		}
-		arry[i] = i1;
-		arry[i+1] = i2;
-		arry[i+2] = NULL;
-		i = 0;
-		while (current_arry[i])
-		{
-			free(current_arry[i]);
-			i++;
-		}
-		free(current_arry);
-	}
+        arry[j] = i1;
+        arry[j+1] = i2;
+        arry[j+2] = NULL;
+		arry[0]->count = current_arry[0]->count + 2; 
+        free(current_arry);
+    }
 	return (arry);
 }
+
+t_intersection **sort_intersections(t_intersection **current_arry)
+{
+	int				count;
+	t_intersection	*temp;
+	t_intersection 	**arry = NULL;
+	int				i;
+	int				j;
+	int				swapped;
+
+	count = current_arry[0]->count;
+	arry = malloc(sizeof(t_intersection  *) * (count + 1));
+	i = 0;
+	while (current_arry[i])
+	{
+		arry[i] = current_arry[i];
+		++i;
+	}
+	i = 0;
+	while (i < count - 1)
+	{
+		swapped = 0;
+		j = 0;
+		while (j < count - i -1)
+		{
+			if (arry[j]->t > arry[j + 1]->t)
+			{
+				temp = arry[j];
+				arry[j] = arry[j + 1];
+				arry [j + 1] = temp;
+				swapped = 1;
+			}
+			++j;
+		}
+		if (swapped == 0)
+			break;
+		++i;
+	}
+	free(current_arry);
+	return (arry);
+}
+
+
 
 void print_arry(t_intersection **arry)
 {
@@ -148,15 +192,20 @@ void print_arry(t_intersection **arry)
 	while (arry[i])
 	{
 		printf("###################################\n");
-		printf("object: %d\n", arry[i]->object->id);
+		printf("\033[1;34m");
+		printf("Object: %s  | ", arry[i]->object->type);
+		printf("ID: %d\n", arry[i]->object->id);
+		printf("-----------------------------------\n");
+		printf("\033[0m");
+		printf("Distance: %f\n", arry[i]->t);
 		printf("###################################\n");
-		printf("distance: %f\n", arry[i]->t);
-		printf("###################################\n");
-
+		printf("\n");
+		i++;
 	}
+	printf("\033[1;31m");
+	printf("Total nbr of intersections: %d\n", arry[0]->count);
+	printf("\033[0m");
 }
-
-
 
 int main(void)
 {
@@ -177,11 +226,17 @@ int main(void)
 	t_distance	res_2;
 	t_intersection intersection_2a;
 	t_intersection intersection_2b;
-	t_intersection **arry;
+	t_intersection **arry = NULL;
 
 	s_org_1 = create_tuples(0, 0, 0, Point);
-	r_org_1 = create_tuples(0, 0, -5, Point);
+	//positive (t0: 4 & t1: 6)
+	//r_org_1 = create_tuples(0, 0, -5, Point);
+	//r_dir_1 = create_tuples(0, 0, 1, Vector);
+	
+	//negative (t0: -6 & t1: -4)
+	r_org_1 = create_tuples(0, 0, 5, Point);
 	r_dir_1 = create_tuples(0, 0, 1, Vector);
+
 	s_1 = create_sphere(0, s_org_1);
 	r_1 = create_ray(r_org_1, r_dir_1);
 	res_1 = intersect(&s_1, &r_1);
@@ -201,14 +256,15 @@ int main(void)
 
 	intersection_1a = create_intersection(&s_1, res_1.t[0]);
 	intersection_1b = create_intersection(&s_1, res_1.t[1]);
-	arry = create_intersections(&arry, &intersection_1a, &intersection_1b);
-	print_arry(&arry);
-
-
+	//arry = create_intersections(arry, &intersection_1a, &intersection_1b);
+	//print_arry(arry);
 	intersection_2a = create_intersection(&s_2, res_2.t[0]);
 	intersection_2b = create_intersection(&s_2, res_2.t[1]);
-	arry = create_intersections(&arry, &intersection_2a, &intersection_2b);
-	print_arry(&arry);	
+	arry = create_intersections(arry, &intersection_1a, &intersection_1b);
+	arry = create_intersections(arry, &intersection_2a, &intersection_2b);
+	print_arry(arry);
+	arry = sort_intersections(arry);
+	print_arry(arry);
 }
 
 /*

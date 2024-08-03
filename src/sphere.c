@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 13:55:42 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/02 14:59:58 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/03 00:43:21 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@ t_sphere create_sphere(int id, t_tuple origin_point)
 		.type = "Sphere",
 		.id = id,
 		.origin_point = origin_point,
+		.transform = (t_matrix_4x4){{
+			{1, 0, 0, 0},
+			{0, 1, 0, 0},
+			{0, 0, 1, 0},
+			{0, 0, 0, 1},
+		}}
 	});
 }
 
@@ -208,6 +214,11 @@ t_intersection *find_hit(t_intersection **arry, int current_item_order)
     return (NULL);
 }
 
+void set_tranform(t_sphere *s, t_matrix_4x4 *mtx)
+{
+	s->transform = *(mtx);
+}
+
 void print_intersection(t_intersection *intersection)
 {
 		printf("###################################\n");
@@ -244,6 +255,60 @@ void print_arry(t_intersection **arry)
 	printf("\033[0m");
 }
 
+int	main(void)
+{
+	/*
+    t_ray r = create_ray(create_tuples(0, 0, -5, Point), create_tuples(0, 0, 1, Vector));
+    t_sphere s = create_sphere(0, create_tuples(0, 0, 0, Point));
+    t_matrix_4x4 scaling_mtx = scale_matrix(2, 2, 2);
+    set_tranform(&s, &scaling_mtx);
+	t_matrix_4x4 inverse_matrix = inverse_a_matrix(&(s.transform), 4);
+	t_ray new_r = transform_ray(&r, &inverse_matrix);
+    t_distance xs = intersect(&s, &new_r);
+    printf("Intersections count: %d\n", xs.count);
+    printf("First intersection: %f\n", xs.t[0]);
+    printf("Second intersection: %f\n", xs.t[1]);
+	*/
+
+
+    t_ray r = create_ray(create_tuples(0, 0, -5, Point), create_tuples(0, 0, 1, Vector));
+    t_sphere s = create_sphere(0, create_tuples(0, 0, 0, Point));
+    t_matrix_4x4 translating_mtx = translate_matrix(5, 0, 0);
+    set_tranform(&s, &translating_mtx);
+	t_matrix_4x4 inverse_matrix = inverse_a_matrix(&(s.transform), 4);
+	t_ray new_r = transform_ray(&r, &inverse_matrix);
+    t_distance xs = intersect(&s, &new_r);
+    printf("Intersections count: %d\n", xs.count);
+    printf("First intersection: %f\n", xs.t[0]);
+    printf("Second intersection: %f\n", xs.t[1]);
+
+
+    return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+###find_hit###
 int main(void)
 {
 	t_sphere	s_1;
@@ -322,6 +387,7 @@ int main(void)
 	hit = find_hit(arry, 2);
 	print_intersection(hit);
 }
+*/
 
 /*
 int main(void)
@@ -359,3 +425,4 @@ t_matrix_4x4 scale_matrix(double x, double y, double z)
 	return (translate);
 }
 */
+

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix5.c                                          :+:      :+:    :+:   */
+/*   matrix_rotate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 17:54:54 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:10:25 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,6 @@ t_matrix_4x4 rotate_x_matrix(double radian)
 	{0, 0, 0, 1},
 	}};
 	return (rotate);
-}
-
-t_matrix_4x4 rotate_x_matrix(double radian)
-{
-	return (t_matrix_4x4){
-		.entries = {
-	{1, 0, 0, 0},
-	{0, cos(radian), -sin(radian), 0},
-	{0, sin(radian), cos(radian), 0},
-	{0, 0, 0, 1},
-	}};
 }
 
 t_matrix_4x4 rotate_y_matrix(double radian)

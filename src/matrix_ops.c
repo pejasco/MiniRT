@@ -1,63 +1,62 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   matrix_ops.c                                       :+:      :+:    :+:   */
+/*   matrix4.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/22 21:53:18 by chuleung          #+#    #+#             */
+/*   Created: 2024/07/30 17:51:46 by chuleung          #+#    #+#             */
 /*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//rotate->scale->translate
+
 #include "../inc/minirt.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <stdbool.h>
 
-void	multi_process(t_mx *product, t_mx *mxa, t_mx *mxb)
+t_matrix_4x4 translate_matrix(double x, double y, double z)
 {
-	int		i;
-	int		p_row_i;
-	int		p_col_i;
-	double	entry;
+	t_matrix_4x4 translate;
 
-	p_row_i = 0;
-	while (p_row_i < mxa->row_num)
-	{
-		p_col_i = 0;
-		while (p_col_i < mxa->col_num)
-		{
-			entry = 0;
-			i = 0;
-			while (i < mxa->col_num)
-			{
-				entry += mxa->entries[p_row_i][i] * mxb->entries[i][p_col_i];
-				i++;
-			}
-			product->entries[p_row_i][p_col_i] = entry;
-			p_col_i++;
-		}
-		p_row_i++;
-	}
+	translate = (t_matrix_4x4){
+		.entries = {
+	{1, 0, 0, x},
+	{0, 1, 0, y},
+	{0, 0, 1, z},
+	{0, 0, 0, 1},
+	}};
+	return (translate);
 }
 
-void	mx_mult_error_msg(void)
+t_matrix_4x4 scale_matrix(double x, double y, double z)
 {
-	ft_putstr_fd(KRED, STDERR_FILENO);
-	ft_putstr_fd("WARNING!!!:", STDERR_FILENO);
-	ft_putstr_fd(KYEL, STDERR_FILENO);
-	ft_putendl_fd("Matrix - Incorrect number of coloumns and rows found "
-		"multiplication", STDERR_FILENO);
+	t_matrix_4x4 translate;
+
+	translate = (t_matrix_4x4){
+		.entries = {
+	{x, 0, 0, 0},
+	{0, y, 0, 0},
+	{0, 0, z, 0},
+	{0, 0, 0, 1},
+	}};
+	return (translate);
 }
 
-t_mx	mtxa_mult_mtxb(t_mx mtxa, t_mx mtxb)
+t_matrix_4x4 shear_matrix(t_shear_vars *vars)
 {
-	t_mx	res;
+	t_matrix_4x4 shear;
 
-	if (mtxa.col_num != mtxb.row_num)
-	{
-		mx_mult_error_msg();
-		return ((t_mx){0});
-	}
-	res = (t_mx){.row_num = mtxa.row_num, .col_num = mtxb.col_num};
-	multi_process(&res, &mtxa, &mtxb);
-	return (res);
+	shear = (t_matrix_4x4){
+		.entries = {
+	{1, vars->xy, vars->xz, 0},
+	{vars->yx, 1, vars->yz, 0},
+	{vars->zx, vars->zy, 1, 0},
+	{0, 0, 0, 1},
+	}};
+	return (shear);
 }
+

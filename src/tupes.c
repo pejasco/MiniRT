@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 20:23:46 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/01 17:05:56 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/02 18:37:50 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,3 +109,23 @@ t_tuple	point_minus_point(const t_tuple *a, const t_tuple *b)
 		substract.type = Point;
 	return (substract);
 }
+
+t_tuple multiply_tuple_with_matrix(t_tuple *tuple, t_matrix_4x4 *matrix)
+{
+    t_tuple result;
+
+    result.x = matrix->entries[0][0] * tuple->x + matrix->entries[0][1] * tuple->y +
+                matrix->entries[0][2] * tuple->z + matrix->entries[0][3] * tuple->w;
+    result.y = matrix->entries[1][0] * tuple->x + matrix->entries[1][1] * tuple->y +
+                matrix->entries[1][2] * tuple->z + matrix->entries[1][3] * tuple->w;
+    result.z = matrix->entries[2][0] * tuple->x + matrix->entries[2][1] * tuple->y +
+                matrix->entries[2][2] * tuple->z + matrix->entries[2][3] * tuple->w;
+    result.w = matrix->entries[3][0] * tuple->x + matrix->entries[3][1] * tuple->y +
+                matrix->entries[3][2] * tuple->z + matrix->entries[3][3] * tuple->w;
+    if (result.w == 1)
+        result.type = Point;
+    else
+        result.type = Vector;
+    return result;
+}
+

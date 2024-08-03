@@ -6,22 +6,23 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/03 01:06:46 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:55:02 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt.h"
 #include "../lib/libft/libft.h"
+#include "../lib/minilibx-linux/mlx.h"
 #include <math.h>
 #include <stdio.h>
 
 int main(void)
 {
-
-
     t_vars  vars;
-
     window_handle(&vars);
+
+
+    
 
 
 

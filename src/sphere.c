@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 13:55:42 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/03 00:43:21 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:54:59 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,36 +255,36 @@ void print_arry(t_intersection **arry)
 	printf("\033[0m");
 }
 
-int	main(void)
-{
-	/*
-    t_ray r = create_ray(create_tuples(0, 0, -5, Point), create_tuples(0, 0, 1, Vector));
-    t_sphere s = create_sphere(0, create_tuples(0, 0, 0, Point));
-    t_matrix_4x4 scaling_mtx = scale_matrix(2, 2, 2);
-    set_tranform(&s, &scaling_mtx);
-	t_matrix_4x4 inverse_matrix = inverse_a_matrix(&(s.transform), 4);
-	t_ray new_r = transform_ray(&r, &inverse_matrix);
-    t_distance xs = intersect(&s, &new_r);
-    printf("Intersections count: %d\n", xs.count);
-    printf("First intersection: %f\n", xs.t[0]);
-    printf("Second intersection: %f\n", xs.t[1]);
-	*/
+// int	main(void)
+// {
+// 	/*
+//     t_ray r = create_ray(create_tuples(0, 0, -5, Point), create_tuples(0, 0, 1, Vector));
+//     t_sphere s = create_sphere(0, create_tuples(0, 0, 0, Point));
+//     t_matrix_4x4 scaling_mtx = scale_matrix(2, 2, 2);
+//     set_tranform(&s, &scaling_mtx);
+// 	t_matrix_4x4 inverse_matrix = inverse_a_matrix(&(s.transform), 4);
+// 	t_ray new_r = transform_ray(&r, &inverse_matrix);
+//     t_distance xs = intersect(&s, &new_r);
+//     printf("Intersections count: %d\n", xs.count);
+//     printf("First intersection: %f\n", xs.t[0]);
+//     printf("Second intersection: %f\n", xs.t[1]);
+// 	*/
 
 
-    t_ray r = create_ray(create_tuples(0, 0, -5, Point), create_tuples(0, 0, 1, Vector));
-    t_sphere s = create_sphere(0, create_tuples(0, 0, 0, Point));
-    t_matrix_4x4 translating_mtx = translate_matrix(5, 0, 0);
-    set_tranform(&s, &translating_mtx);
-	t_matrix_4x4 inverse_matrix = inverse_a_matrix(&(s.transform), 4);
-	t_ray new_r = transform_ray(&r, &inverse_matrix);
-    t_distance xs = intersect(&s, &new_r);
-    printf("Intersections count: %d\n", xs.count);
-    printf("First intersection: %f\n", xs.t[0]);
-    printf("Second intersection: %f\n", xs.t[1]);
+//     t_ray r = create_ray(create_tuples(0, 0, -5, Point), create_tuples(0, 0, 1, Vector));
+//     t_sphere s = create_sphere(0, create_tuples(0, 0, 0, Point));
+//     t_matrix_4x4 translating_mtx = translate_matrix(5, 0, 0);
+//     set_tranform(&s, &translating_mtx);
+// 	t_matrix_4x4 inverse_matrix = inverse_a_matrix(&(s.transform), 4);
+// 	t_ray new_r = transform_ray(&r, &inverse_matrix);
+//     t_distance xs = intersect(&s, &new_r);
+//     printf("Intersections count: %d\n", xs.count);
+//     printf("First intersection: %f\n", xs.t[0]);
+//     printf("Second intersection: %f\n", xs.t[1]);
 
 
-    return 0;
-}
+//     return 0;
+// }
 
 
 

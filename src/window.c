@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:30:38 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:58:58 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void set_up_hooks(t_vars *vars)
 {
 	mlx_hook(vars->win_ptr, KeyPress, KeyPressMask, iso_kb_key, vars);
-	mlx_mouse_hook(vars->win_ptr, iso_mouse_button, vars);
+	//mlx_mouse_hook(vars->win_ptr, iso_mouse_button, vars);
 }
 
 void	window_handle(t_vars *vars)

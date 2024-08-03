@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:14:28 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/03 17:37:15 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,6 @@ void	supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color)
 		+ (coord.x * (img_vars->bits_per_pixel / 8));
 	*((unsigned int *)(offset + img_vars->img_pixels_ptr)) = color;
 }
-
-
-
-
 
 /*
 void	fill_image_with_color(t_img *img_vars, int color)

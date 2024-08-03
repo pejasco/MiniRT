@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 19:22:41 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/01 14:33:39 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/03 18:08:33 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,15 @@ int	iso_kb_key(int key, t_vars *vars)
 	return (0);
 }
 
-int	iso_mouse_button(int button, int x, int y, t_vars *vars)
-{
-	x += 0;
-	y += 0;
-	printf("%d pressed\n", button);
-	/*
-	if (button == Button4 || button == Button5)
-		scale(vars, button);
-	*/
-	return (0);
-}
+
+// int	iso_mouse_button(int button, int x, int y, t_vars *vars)
+// {
+// 	x += 0;
+// 	y += 0;
+// 	printf("%d pressed\n", button);
+// 	/*
+// 	if (button == Button4 || button == Button5)
+// 		scale(vars, button);
+// 	*/
+// 	return (0);
+// }

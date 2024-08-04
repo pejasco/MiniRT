@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/03 18:55:02 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/04 00:38:29 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,27 @@
 
 int main(void)
 {
-    t_vars  vars;
-    window_handle(&vars);
+	t_vars		vars;
+	t_ray		r;
+	t_sphere 	s;
+	
 
 
-    
 
 
 
-    put_image_to_window_vars(&vars);
-    set_up_hooks(&vars);
-    mlx_loop(vars.mlx_ptr);
-    window_close(&vars);
+
+
+
+	window_handle(&vars);
+
+
+	
+
+
+
+	put_image_to_window_vars(&vars);
+	set_up_hooks(&vars);
+	mlx_loop(vars.mlx_ptr);
+	window_close(&vars);
 }

@@ -6,13 +6,13 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 20:23:46 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/02 18:37:50 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/05 12:35:58 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minirt.h"
 
-t_tuple	create_tuples(double x, double y, double z, t_tuple_type type)
+t_tuple	create_tuple(double x, double y, double z, t_tuple_type type)
 {
 	t_tuple	tuple;
 
@@ -47,6 +47,31 @@ t_tuple	add_tuples(const t_tuple *a, const t_tuple *b)
 	return (addition);
 }
 
+t_tuple subtract_tuples(const t_tuple *a, const t_tuple *b)
+{
+    t_tuple subtract;
+
+    subtract.x = a->x - b->x;
+    subtract.y = a->y - b->y;
+    subtract.z = a->z - b->z;
+
+    if (a->type == Point && b->type == Point)
+    {
+        subtract.type = Vector;
+    }
+    else if (a->type == Vector && b->type == Point)
+    {
+        subtract.type = Point;
+    }
+    else
+    {
+        subtract.type = a->type;
+    }
+
+    return subtract;
+}
+
+/*
 t_tuple	substract_tuples(const t_tuple *a, const t_tuple *b)
 {
 	t_tuple	substract;
@@ -74,6 +99,7 @@ t_tuple	substract_tuples(const t_tuple *a, const t_tuple *b)
 	}
 	return (substract);
 }
+*/
 
 t_tuple	negate_tuple(const t_tuple *a)
 {

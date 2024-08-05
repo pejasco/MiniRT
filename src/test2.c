@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test.c                                             :+:      :+:    :+:   */
+/*   test2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/05 23:09:40 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:40:30 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,80 +16,70 @@
 #include <math.h>
 #include <stdio.h>
 
-int main(void)
-{
-    t_vars          vars;
-    t_ray           r;
-    t_sphere        s;
-    t_tuple         ray_origin;
-    t_tuple         target_wall_point;
-    t_tuple         ray_direction;
-    t_tuple         normalized_ray_direction;
-    t_distance      distance;
-    t_intersection  a;
-    t_intersection  b;
-    t_intersection  **intersection_arry;
-    t_px_coord      canvas_coord;
-    t_intersection  *hit; // Added hit variable
+t_intersect_pts sphere_intersec_pts(t_sphere *s, t_ray *r) {
+    t_intersect_pts intersect_pts;
+    t_sphere_intersec_vars vars;
+    t_tuple sphere_to_ray;
+    
+    sphere_to_ray = point_minus_point(&r->origin_point, &s->origin_point);
+    vars.a = dot_product(&r->vector, &r->vector);
+    vars.b = 2 * dot_product(&r->vector, &sphere_to_ray);
+    vars.c = dot_product(&sphere_to_ray, &sphere_to_ray) - 1;
+    vars.discriminant = vars.b * vars.b - 4 * vars.a * vars.c;
 
-    double      wall_size;
-    double      canvas_pixel;
-    double      pixel_size;
-    double      half;
-    double      magnitude;
+    intersect_pts.count = 0;
+    if (vars.discriminant >= 0) {
+        intersect_pts.count = 2;
+        intersect_pts.intersec_1.x = (-vars.b - sqrt(vars.discriminant)) / (2 * vars.a);
+        intersect_pts.intersec_2.x = (-vars.b + sqrt(vars.discriminant)) / (2 * vars.a);
+        intersect_pts.intersec_1.w = intersect_pts.intersec_2.w = 1.0;
+    }
+    return intersect_pts;
+}
 
-    int         pixel_x = 0;
-    int         pixel_y = 0;
-    int         world_x;
-    int         world_y;
-    int         wall_z = 10;
+void draw_sphere(t_img *img_vars) {
+    t_ray ray;
+    t_sphere sphere;
+    t_intersect_pts intersect_pts;
+    int canvas_pixels = 100;
+    double wall_size = 7.0;
+    double pixel_size = wall_size / canvas_pixels;
+    double half = wall_size / 2.0;
+    int x, y;
+    t_px_coord px_coord;
+
+    // Initialize the sphere
+    sphere = create_sphere(1, create_tuple(0, 0, 0, Point));
+    ray = create_ray(create_tuple(0, 0, -5, Point), create_tuple(0, 0, 1, Vector));
+
+    // Draw the canvas
+    for (y = 0; y < canvas_pixels; y++) {
+        for (x = 0; x < canvas_pixels; x++) {
+            double world_x = -half + pixel_size * x;
+            double world_y = half - pixel_size * y;
+            t_tuple pixel_position = create_tuple(world_x, world_y, 10, Point);
+            t_tuple ray_direction = normalize_vector(&pixel_position, find_magnitude(&pixel_position));
+            ray.vector = ray_direction;
+            intersect_pts = sphere_intersec_pts(&sphere, &ray);
+
+            // If the sphere is hit, color the pixel
+            if (intersect_pts.count > 0) {
+                px_coord.x = WIDTH / 2 + (x - canvas_pixels / 2) * (WIDTH / canvas_pixels);
+                px_coord.y = HEIGHT / 2 - (y - canvas_pixels / 2) * (HEIGHT / canvas_pixels); // Flip y-axis for image
+                px_coord.rgb = RED; // Color the pixel red if the sphere is hit
+                supa_pixel_put(img_vars, px_coord, px_coord.rgb);
+            }
+        }
+    }
+}
+
+int main() {
+    t_vars vars;
 
     window_handle(&vars);
-    ray_origin = create_tuple(0, 0, -5, Point);
-    wall_size = 7.0;
-    canvas_pixel = 100;
-    pixel_size = wall_size / canvas_pixel;
-    half = wall_size / 2;
-    create_canvas(&vars, 100, 100, BLACK);
-    //create_canvas(&vars.img_vars, 100, 100, BLACK);
-    s = create_sphere(0, create_tuple(0, 0, 0, Point));
-
-    while (pixel_y < canvas_pixel)
-    {
-        pixel_x = 0; // reset pixel_x for each row
-        while (pixel_x < canvas_pixel)
-        {
-            world_x = -half + pixel_size * pixel_x;
-            world_y = half - pixel_size * pixel_y;
-            target_wall_point = create_tuple(world_x, world_y, wall_z, Point);
-            ray_direction = subtract_tuples(&target_wall_point, &ray_origin);
-            magnitude = find_magnitude(&ray_direction);
-            normalized_ray_direction = normalize_vector(&ray_direction, magnitude);
-            r = create_ray(ray_origin, normalized_ray_direction);
-            distance = intersect(&s, &r);
-            if (distance.count > 0) // if there are intersections
-            {
-                a = create_intersection(&s, distance.t[0]);
-                b = create_intersection(&s, distance.t[1]);
-                intersection_arry = create_intersections(NULL, &a, &b);
-                intersection_arry = sort_intersections(intersection_arry);
-                hit = find_hit(intersection_arry, 0); // find the hit
-                if (hit != NULL) // if there is a hit
-                {
-                    canvas_coord = (t_px_coord){.x = pixel_x, .y = canvas_pixel - pixel_y - 1, .rgb = RED};
-                    supa_pixel_put(&vars.img_vars, canvas_coord, RED);
-                }
-                free(intersection_arry); // free the memory allocated for intersection_arry
-            }
-            pixel_x++; // increment pixel_x for each pixel in the row
-        }
-        pixel_y++; // increment pixel_y for each row
-    }
-
-    put_image_to_window_vars(&vars);
-    set_up_hooks(&vars);
+    draw_sphere(&vars.img_vars);
+    mlx_put_image_to_window(vars.mlx_ptr, vars.win_ptr, vars.img_vars.img_ptr, 0, 0);
     mlx_loop(vars.mlx_ptr);
-    window_close(&vars);
 
     return 0;
 }

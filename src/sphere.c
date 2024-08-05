@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 13:55:42 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/03 18:54:59 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:22:09 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,27 +100,27 @@ t_intersection create_intersection(t_sphere *object, double t)
 } 
 
 t_intersection **create_intersections(t_intersection **current_arry,
-	t_intersection *i1, t_intersection *i2)
+    t_intersection *i1, t_intersection *i2)
 {
-	int		i;
-	int		j;
-	
-	i = 0;
-	j = 0;
-	t_intersection **arry;
+    int     i;
+    int     j;
+    
+    i = 0;
+    j = 0;
+    t_intersection **arry;
 
     if (current_arry == NULL)
     {
         arry = malloc(sizeof(t_intersection *) * 3);
         if (arry == NULL)
-		{
+        {
             perror("Failed to allocate memory for intersections");
             exit(1);
         }
         arry[0] = i1;
         arry[1] = i2;
         arry[2] = NULL;
-		arry[0]->count = 2;
+        arry[0]->count = 2;
     }
     else
     {
@@ -132,21 +132,54 @@ t_intersection **create_intersections(t_intersection **current_arry,
             perror("Failed to allocate memory for intersections");
             exit(1);
         }
-		i = 0;
+        i = 0;
         while (current_arry[j])
-		{
-			arry[j] = current_arry[j];
-			++j;
-		}
+        {
+            arry[j] = current_arry[j];
+            ++j;
+        }
         arry[j] = i1;
         arry[j+1] = i2;
         arry[j+2] = NULL;
-		arry[0]->count = current_arry[0]->count + 2; 
+        arry[0]->count = current_arry[0]->count + 2; 
         free(current_arry);
     }
-	return (arry);
+    return (arry);
 }
 
+
+t_intersection **sort_intersections(t_intersection **current_arry)
+{
+    int count = 2; // assuming there are always 2 intersections
+    t_intersection *temp;
+    t_intersection **arry = malloc(sizeof(t_intersection *) * count);
+    if (arry == NULL) {
+        perror("Failed to allocate memory for sorted intersections");
+        exit(1);
+    }
+    arry[0] = current_arry[0];
+    arry[1] = current_arry[1];
+
+    for (int i = 0; i < count - 1; i++)
+    {
+        int swapped = 0;
+        for (int j = 0; j < count - i - 1; j++)
+        {
+            if (arry[j]->t > arry[j + 1]->t)
+            {
+                temp = arry[j];
+                arry[j] = arry[j + 1];
+                arry[j + 1] = temp;
+                swapped = 1;
+            }
+        }
+        if (swapped == 0)
+            break;
+    }
+    return arry;
+}
+
+/*
 t_intersection **sort_intersections(t_intersection **current_arry)
 {
 	int				count;
@@ -193,6 +226,7 @@ t_intersection **sort_intersections(t_intersection **current_arry)
 	free(current_arry);
 	return (arry);
 }
+*/
 
 t_intersection *find_hit(t_intersection **arry, int current_item_order)
 {

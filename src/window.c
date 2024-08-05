@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:30:38 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/03 17:58:58 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/05 22:36:19 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@ void set_up_hooks(t_vars *vars)
 	//mlx_mouse_hook(vars->win_ptr, iso_mouse_button, vars);
 }
 
+void window_handle(t_vars *vars) {
+    vars->mlx_ptr = mlx_init();
+    vars->win_ptr = mlx_new_window(vars->mlx_ptr, WIDTH, HEIGHT, "!!! miniRT !!!");
+    vars->img_vars.img_ptr = mlx_new_image(vars->mlx_ptr, WIDTH, HEIGHT);
+    vars->img_vars.img_pixels_ptr = mlx_get_data_addr(vars->img_vars.img_ptr,
+        &vars->img_vars.bits_per_pixel,
+        &vars->img_vars.line_len,
+        &vars->img_vars.endian);
+}
+
+/*
 void	window_handle(t_vars *vars)
 {
 	vars->mlx_ptr = mlx_init();
@@ -29,11 +40,11 @@ void	window_handle(t_vars *vars)
 			&vars->img_vars.line_len,
 			&vars->img_vars.endian);
 }
-
+*/
 void	put_image_to_window_vars(t_vars *vars)
 {
 	mlx_put_image_to_window(vars->mlx_ptr,
-		vars->win_ptr, vars->img_vars.img_ptr, 0, 0);
+		vars->win_ptr, vars->img_vars.img_ptr,  (WIDTH - 100) / 2, (HEIGHT - 100) / 2);
 }
 
 void	window_close(t_vars *vars)

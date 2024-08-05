@@ -7,6 +7,8 @@ MINILIBX_PATH="../lib/minilibx-linux/"
 
 # Compile the code
 cc -I$HEADER_PATH -L$MINILIBX_PATH -Werror -Wextra -Wall \
+argb.c \
+canvas.c \
 window.c \
 event.c \
 test.c \
@@ -18,7 +20,7 @@ matrix_other.c \
 matrix_other2.c \
 matrix_rotate.c \
 tupes.c \
-tupes2.c -lXext -lX11 -lm -lmlx_Linux -o diu
+tupes2.c -g -lXext -lX11 -lm -lmlx_Linux -o diu
 
 
 

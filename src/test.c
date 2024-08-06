@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/06 23:52:09 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:54:56 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int main(void)
     canvas_pixel = 100;
     pixel_size = wall_size / canvas_pixel;
     half = wall_size / 2;
-    //create_canvas(&vars, 100, 100, WHITE);
-    //create_canvas(&vars.img_vars, 100, 100, BLACK);
+    create_canvas(&vars, 100, 100, WHITE);
+    //create_canvas(&vars.img_vars, 100, 100, WHITE);
     s = create_sphere(0, create_tuple(0, 0, 0, Point));
 
     while (pixel_y < canvas_pixel - 1)

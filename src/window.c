@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:30:38 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/05 22:36:19 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:07:37 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	window_handle(t_vars *vars)
 void	put_image_to_window_vars(t_vars *vars)
 {
 	mlx_put_image_to_window(vars->mlx_ptr,
+		//vars->win_ptr, vars->img_vars.img_ptr, WIDTH, HEIGHT);
 		vars->win_ptr, vars->img_vars.img_ptr,  (WIDTH - 100) / 2, (HEIGHT - 100) / 2);
 }
 

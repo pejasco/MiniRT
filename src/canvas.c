@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:14:28 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/06 14:59:24 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:02:36 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ t_canvas create_canvas(t_vars *vars, int width, int height, t_argb rgb)
 		while (w < width)
 		{
 			coord = (t_px_coord){.x = (w), .y = (h), .rgb = rgb};
-			mlx_pixel_put(vars->mlx_ptr, vars->win_ptr, coord.x, coord.y, (int)rgb);
-			//supa_pixel_put(img_vars, coord, rgb);
+			//mlx_pixel_put(vars->mlx_ptr, vars->win_ptr, coord.x, coord.y, (int)rgb);
+			supa_pixel_put(vars, coord, rgb);
 			w++;
 		}
 		h++;
@@ -89,7 +89,7 @@ void supa_pixel_put(t_vars *vars, t_px_coord coord, t_argb color) {
 	offset = (coord.y * vars->img_vars.line_len) + (coord.x * (vars->img_vars.bits_per_pixel / 8));
 	pixel = vars->img_vars.img_pixels_ptr + offset;
         *(unsigned int *)pixel = color; // Assuming color is in ARGB format
-		put_image_to_window_vars(vars);
+	//put_image_to_window_vars(vars);
     }
 }
 

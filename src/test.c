@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/06 15:31:29 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:27:31 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,17 +50,19 @@ int main(void)
     canvas_pixel = 100;
     pixel_size = wall_size / canvas_pixel;
     half = wall_size / 2;
-    create_canvas(&vars, 100, 100, BLACK);
+    //create_canvas(&vars, 100, 100, WHITE);
     //create_canvas(&vars.img_vars, 100, 100, BLACK);
     s = create_sphere(0, create_tuple(0, 0, 0, Point));
 
     while (pixel_y < canvas_pixel - 1)
     {
+        world_y = half - pixel_size * (pixel_y + 0.5);
+        //world_y = half - pixel_size * pixel_y;
         pixel_x = 0; // reset pixel_x for each row
         while (pixel_x < canvas_pixel - 1)
         {
-            world_x = -half + pixel_size * pixel_x;
-            world_y = half - pixel_size * pixel_y;
+            world_x = -half + pixel_size * (pixel_x + 0.5);
+            //world_x = -half + pixel_size * pixel_x;
             target_wall_point = create_tuple(world_x, world_y, wall_z, Point);
             ray_direction = subtract_tuples(&target_wall_point, &ray_origin);
             magnitude = find_magnitude(&ray_direction);
@@ -72,8 +74,7 @@ int main(void)
                 a = create_intersection(&s, distance.t[0]);
                 b = create_intersection(&s, distance.t[1]);
                 intersection_arry = create_intersections(NULL, &a, &b);
-                intersection_arry = sort_intersections(intersection_arry);
-                hit = find_hit(intersection_arry, 0); // find the hit
+                hit = find_hit(intersection_arry); // find the hit
                 if (hit != NULL) // if there is a hit
                 {
 
@@ -88,7 +89,7 @@ int main(void)
         pixel_y++; // increment pixel_y for each row
     }
 
-    //put_image_to_window_vars(&vars);
+    put_image_to_window_vars(&vars);
     set_up_hooks(&vars);
     mlx_loop(vars.mlx_ptr);
     window_close(&vars);

@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 13:55:42 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/05 22:22:09 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:49:19 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,14 @@ t_distance intersect(t_sphere *s, t_ray *r)
 	distance.t[0] = 0;
 	distance.t[1] = 0;
 	vars.discriminant = find_discirminant(s, r, &vars);	
-	if(vars.discriminant < 0)
-		printf("No interceptions found\n");
-	else if (vars.discriminant >= 0)
+	//if(vars.discriminant < 0)
+		//printf("No interceptions found\n");
+	if (vars.discriminant >= 0)
 	{
 		distance.count = 2;
 		distance.t[0] = (-vars.b - pow(vars.discriminant, 0.5)) / (2 * vars.a);
 		distance.t[1] = (-vars.b + pow(vars.discriminant, 0.5)) / (2 * vars.a);
+		printf("t0: %f, t1: %f\n ", distance.t[0], distance.t[1]);
 	}
 	return (distance);
 }
@@ -147,7 +148,40 @@ t_intersection **create_intersections(t_intersection **current_arry,
     return (arry);
 }
 
+t_intersection *find_hit(t_intersection **current_arry)
+{
+    int count = 2; // assuming there are always 2 intersections
+    t_intersection *temp;
+    t_intersection **arry = malloc(sizeof(t_intersection *) * count);
+    if (arry == NULL) {
+        perror("Failed to allocate memory for sorted intersections");
+        exit(1);
+    }
+    arry[0] = current_arry[0];
+    arry[1] = current_arry[1];
 
+    // Sort the intersections
+    for (int i = 0; i < count - 1; i++)
+    {
+        int swapped = 0;
+        for (int j = 0; j < count - i - 1; j++)
+        {
+            if (arry[j]->t > arry[j + 1]->t)
+            {
+                temp = arry[j];
+                arry[j] = arry[j + 1];
+                arry[j + 1] = temp;
+                swapped = 1;
+            }
+        }
+        if (swapped == 0)
+            break;
+    }
+	return (arry[0]);
+}
+
+
+/*
 t_intersection **sort_intersections(t_intersection **current_arry)
 {
     int count = 2; // assuming there are always 2 intersections
@@ -178,6 +212,7 @@ t_intersection **sort_intersections(t_intersection **current_arry)
     }
     return arry;
 }
+*/
 
 /*
 t_intersection **sort_intersections(t_intersection **current_arry)
@@ -227,7 +262,23 @@ t_intersection **sort_intersections(t_intersection **current_arry)
 	return (arry);
 }
 */
+/*
+t_intersection *find_hit(t_intersection **arry)
+{
+    int	i;
+    int count;
 
+    while (i < count + 1)
+    {
+        if (arry[i]->t >= 0)
+            return arry[i];
+        i++;
+    }
+    return (NULL);
+}
+*/
+
+/*
 t_intersection *find_hit(t_intersection **arry, int current_item_order)
 {
     int	i;
@@ -239,7 +290,7 @@ t_intersection *find_hit(t_intersection **arry, int current_item_order)
         return (NULL);
     
     i = current_item_order + 1;
-    while (i < count)
+    while (i < count + 1)
     {
         if (arry[i]->t >= 0)
             return arry[i];
@@ -247,6 +298,7 @@ t_intersection *find_hit(t_intersection **arry, int current_item_order)
     }
     return (NULL);
 }
+*/
 
 void set_tranform(t_sphere *s, t_matrix_4x4 *mtx)
 {
@@ -320,29 +372,7 @@ void print_arry(t_intersection **arry)
 //     return 0;
 // }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
-###find_hit###
 int main(void)
 {
 	t_sphere	s_1;

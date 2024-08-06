@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 18:14:28 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/05 23:08:44 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 14:59:24 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,15 @@ void	supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color)
 }
 */
 
-void supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color) {
+void supa_pixel_put(t_vars *vars, t_px_coord coord, t_argb color) {
     int offset;
     char *pixel;
 
     if (coord.x >= 0 && coord.x < WIDTH && coord.y >= 0 && coord.y < HEIGHT) {
-        offset = (coord.y * img_vars->line_len) + (coord.x * (img_vars->bits_per_pixel / 8));
-        pixel = img_vars->img_pixels_ptr + offset;
+	offset = (coord.y * vars->img_vars.line_len) + (coord.x * (vars->img_vars.bits_per_pixel / 8));
+	pixel = vars->img_vars.img_pixels_ptr + offset;
         *(unsigned int *)pixel = color; // Assuming color is in ARGB format
+		put_image_to_window_vars(vars);
     }
 }
 

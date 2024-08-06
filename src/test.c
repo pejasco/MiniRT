@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/05 23:09:40 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 15:31:29 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ int main(void)
     //create_canvas(&vars.img_vars, 100, 100, BLACK);
     s = create_sphere(0, create_tuple(0, 0, 0, Point));
 
-    while (pixel_y < canvas_pixel)
+    while (pixel_y < canvas_pixel - 1)
     {
         pixel_x = 0; // reset pixel_x for each row
-        while (pixel_x < canvas_pixel)
+        while (pixel_x < canvas_pixel - 1)
         {
             world_x = -half + pixel_size * pixel_x;
             world_y = half - pixel_size * pixel_y;
@@ -76,17 +76,19 @@ int main(void)
                 hit = find_hit(intersection_arry, 0); // find the hit
                 if (hit != NULL) // if there is a hit
                 {
+
+                    printf("x: %d y: %d intercepted!\n", pixel_x, pixel_y);
                     canvas_coord = (t_px_coord){.x = pixel_x, .y = canvas_pixel - pixel_y - 1, .rgb = RED};
-                    supa_pixel_put(&vars.img_vars, canvas_coord, RED);
+                    supa_pixel_put(&vars, canvas_coord, RED);
                 }
                 free(intersection_arry); // free the memory allocated for intersection_arry
             }
-            pixel_x++; // increment pixel_x for each pixel in the row
+             pixel_x++; // increment pixel_x for each pixel in the row
         }
         pixel_y++; // increment pixel_y for each row
     }
 
-    put_image_to_window_vars(&vars);
+    //put_image_to_window_vars(&vars);
     set_up_hooks(&vars);
     mlx_loop(vars.mlx_ptr);
     window_close(&vars);

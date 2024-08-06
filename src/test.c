@@ -6,7 +6,7 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 00:45:07 by chuleung          #+#    #+#             */
-/*   Updated: 2024/08/06 23:27:31 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 23:52:09 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int main(void)
 
     while (pixel_y < canvas_pixel - 1)
     {
-        world_y = half - pixel_size * (pixel_y + 0.5);
+        world_y = half - pixel_size * pixel_y;
         //world_y = half - pixel_size * pixel_y;
         pixel_x = 0; // reset pixel_x for each row
         while (pixel_x < canvas_pixel - 1)
         {
-            world_x = -half + pixel_size * (pixel_x + 0.5);
+            world_x = -half + pixel_size * pixel_x;
             //world_x = -half + pixel_size * pixel_x;
             target_wall_point = create_tuple(world_x, world_y, wall_z, Point);
             ray_direction = subtract_tuples(&target_wall_point, &ray_origin);

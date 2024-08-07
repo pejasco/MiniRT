@@ -6,15 +6,15 @@
 /*   By: chuleung <chuleung@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/20 16:46:52 by chuleung          #+#    #+#             */
-/*   Updated: 2024/07/31 22:05:20 by chuleung         ###   ########.fr       */
+/*   Updated: 2024/08/06 22:54:33 by chuleung         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
-#include "libft.h"
-#include "mlx.h"
+#include "../lib/libft/libft.h"
+#include "../lib/minilibx-linux/mlx.h"
 #include <math.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -29,6 +29,12 @@
 #define MAX_ROW 4
 # define WHITE 0xffffff
 # define BLACK 0x000000
+# define BLUE  0x0000ff
+# define GREEN 0x00ff00
+# define RED   0xff0000
+# define MAGENTA 0xff00ff
+# define YELLOW  0xffff00
+# define CYAN    0x00ffff
 # define PI 3.1415926
 # define KNRM "\x1B[0m"
 # define KRED "\x1B[31m"
@@ -42,35 +48,20 @@ typedef enum e_tuple_type
 	Point,
 } t_tuple_type;
 
-
-//______________________________________
-//struc for bresenham:
-
-typedef struct s_slope_status
+typedef enum e_shape
 {
-	bool	is_greater_than_1;
-	bool	is_negative;
-}	t_slope_status;
-
-typedef struct s_interpolation
-{
-	double	curr;
-	double	step;
-}	t_interpolation;
-
-typedef struct s_delta
-{
-	int	x;
-	int	y;
-}	t_delta;
+	Sphere,
+	Plane,
+	Cylinder,
+} t_shape;
 
 //______________________________________
 
 typedef struct s_px_coord
 {
-	int		x;
-	int		y;
-	int		rgb;
+	int			x;
+	int			y;
+	t_argb		rgb;
 }	t_px_coord;
 
 /*
@@ -81,6 +72,25 @@ typedef struct s_matrix
 	double		entries[MAX_ROW][MAX_COL];
 }	t_mx;
 */
+
+typedef	struct s_canvas
+{
+	int		width;
+	int		height;
+	t_argb	rgb;
+} t_canvas;
+
+
+typedef struct s_tuple
+{
+	double			x;
+	double			y;
+	double			z;
+	double			w;
+	t_tuple_type 	type;
+	t_argb			rgb;
+	//t_mx			real_coord;
+} t_tuple;
 
 typedef struct s_matrix_4x4
 {
@@ -137,15 +147,33 @@ typedef struct s_atof_vars
 
 typedef struct s_sphere
 {
-	int			id;
-	t_tuple		origin_point;
+	int				id;
+	char			*type;
+	t_tuple			origin_point;
+	t_matrix_4x4	transform;
 } t_sphere;
 
-typedef struct s_intersec
+
+typedef	struct	s_distance
 {
+	int		count;
+	double	t[2];
+}t_distance;
+
+typedef struct	s_intersect_pts
+{
+	int			count;
 	t_tuple		intersec_1;				
 	t_tuple		intersec_2;
-} t_intersec;
+} t_intersect_pts;
+
+typedef struct s_intersection
+{
+	int			count;
+	int			order;
+	t_sphere	*object;
+	double		t;
+} t_intersection;
 
 typedef struct s_sphere_intersec_vars
 {
@@ -181,16 +209,6 @@ int main(void)
 }
 */
 
-typedef struct s_tuple
-{
-	double			x;
-	double			y;
-	double			z;
-	double			w;
-	t_tuple_type 	type;
-	int				rgb;
-	//t_mx			real_coord;
-} t_tuple;
 
 typedef struct s_color
 {
@@ -238,13 +256,18 @@ unsigned char	get_b(t_argb argb);
 //void	draw_line(t_img *img_vars, t_px_coord a, t_px_coord b);
 
 //canvas.c
-void	supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color);
+void supa_pixel_put(t_vars *vars, t_px_coord coord, t_argb color);
+//void		supa_pixel_put(t_img *img_vars, t_px_coord coord, t_argb color);
+//t_canvas	create_canvas(t_img *img_vars, int width, int height, t_argb rgb);
+t_canvas	create_canvas(t_vars *vars, int width, int height, t_argb rgb);
 
 //color.c
+/*
 t_color create_color(double r, double g, double b);
 t_color add_colors(const t_color *a, const t_color *b);
 t_color subtract_colors(const t_color *original, const t_color *subtract);
 t_color multiply_colors(const t_color *a, const t_color *b);
+*/
 
 //cocord_conversion.c
 /*
@@ -287,18 +310,26 @@ void	rotate(t_vars *vars, int key);
 */
 
 //tupes
-t_tuple	create_tuples(double x, double y, double z,
-				double w, t_tuple_type type);
+t_tuple	create_tuple(double x, double y, double z, t_tuple_type type);
 t_tuple	add_tuples(const t_tuple *a, const t_tuple *b);
-t_tuple	substract_tuples(const t_tuple *a, const t_tuple *b);
+t_tuple subtract_tuples(const t_tuple *a, const t_tuple *b);
 t_tuple	negate_tuple(const t_tuple *a);
 t_tuple scale_tuple(const t_tuple *a, double scale);
+t_tuple	point_minus_point(const t_tuple *a, const t_tuple *b);
+t_tuple multiply_tuple_with_matrix(t_tuple *tuple, t_matrix_4x4 *matrix);
 
-//tupes
+//tupes2
 double	find_magnitude(const t_tuple *a);
 t_tuple	normalize_vector(const t_tuple *a, double magnitude);
 double	dot_product(const t_tuple *a, const t_tuple *b);
 t_tuple	cross_product(const t_tuple *a, const t_tuple *b);
+
+//ray.c
+t_ray	create_ray(t_tuple point, t_tuple vector);
+t_tuple find_position_of_ray(t_ray *ray, double speed);
+t_ray	transform_ray(t_ray *ray, t_matrix_4x4 *mtx);
+void	print_ray(t_ray *ray);
+
 
 //matrix
 bool			are_the_same_matrix(const t_matrix_4x4 *a,
@@ -334,6 +365,22 @@ t_matrix_4x4	rotate_x_matrix(double radian);
 t_matrix_4x4	rotate_y_matrix(double radian);
 t_matrix_4x4	rotate_z_matrix(double radian);
 
+//sphere
+t_sphere		create_sphere(int id, t_tuple origin_point);
+t_intersect_pts sphere_intersec_pts(t_sphere *s, t_ray *r);
+t_distance		intersect(t_sphere *s, t_ray *r);
+t_intersection	create_intersection(t_sphere *object, double t);
+t_intersection	**create_intersections(t_intersection **current_arry,
+					t_intersection *i1, t_intersection *i2);
+//t_intersection	**sort_intersections(t_intersection **current_arry);
+t_intersection	*find_hit(t_intersection **current_arry);
+void			set_tranform(t_sphere *s, t_matrix_4x4 *mtx);
+void			print_intersection(t_intersection *intersection);
+void			print_arry(t_intersection **arry);
+
+
+
+
 //utilities
 void	px_coord_swap(t_px_coord *a, t_px_coord *b);
 int		round_double(double n);
@@ -346,6 +393,7 @@ void	print_matrix(t_matrix_4x4 *mtx);
 //window
 void 	set_up_hooks(t_vars *vars);
 void	window_handle(t_vars *vars);
+void	put_image_to_window_vars(t_vars *vars);
 void	window_close(t_vars *vars);
 
 #endif

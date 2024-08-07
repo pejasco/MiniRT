@@ -6,6 +6,9 @@
         "limits.h": "c",
         "stdlib.h": "c",
         "stdbool.h": "c",
-        "fcntl.h": "c"
+        "fcntl.h": "c",
+        "libft.h": "c",
+        "keysym.h": "c",
+        "mlx.h": "c"
     }
 }
